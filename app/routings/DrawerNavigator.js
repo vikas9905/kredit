@@ -13,8 +13,6 @@ export const DrawerLayout = ({navigation}) =>{
     <Drawer.Navigator screenOptions={{headerShown:false}} 
         drawerContent={(props) => <DrawerContent {...props} />} >
             <Drawer.Screen name="HomeDrawer" component={MyTabs} />
-            <Drawer.Screen name="Profile" component={Profile} />
-            <Drawer.Screen name="Home1" component={Home} />
             <Drawer.Screen name="Profile1" component={Profile} />
             <Drawer.Screen name="Home2" component={Home} />
             <Drawer.Screen name="Profile2" component={Profile} />

@@ -10,8 +10,9 @@ import { fromLeft, zoomIn, zoomOut } from 'react-navigation-transitions';
 import config from '../config'
 import {DrawerLayout }from './DrawerNavigator';
 import Profile from '../screens/proffile/proffile';
-
+import {QuizScreen} from '../screens/games/quiz';
 import { MyTabs } from './BottomTabBar';
+import {CasinoScreen} from '../screens/games/casino';
 const Stack = createStackNavigator();
 
 export default function MainStack() {
@@ -25,8 +26,8 @@ export default function MainStack() {
         })} */}
         {/* <Stack.Screen name="MyTabs" component={MyTabs} options={{headerShown:false}}/> */}
         <Stack.Screen name="DrawerLayout" component={DrawerLayout} options={{headerShown:false}}/>
-        
-       
+        <Stack.Screen name="quiz" component={QuizScreen} options={{headerShown:false}} />
+        <Stack.Screen name="casino" component={CasinoScreen} options={{headerShown:false}} />
         {/* <Stack.Screen name="Profile" component={Profile} options={{headerStyleInterpolator: HeaderStyleInterpolators.forUIKit,headerShown:false}}/> */}
         {/* <Stack.Screen name="Home" component={Home} options={{headerStyleInterpolator: HeaderStyleInterpolators.forUIKit,}}/> */}
        

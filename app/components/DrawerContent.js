@@ -85,13 +85,35 @@ export function DrawerContent(props) {
                                 size={size}
                                 />
                             )}
+                            label="Quiz"
+                            onPress={() => {props.navigation.navigate('quiz')}}
+                        />
+                        <DrawerItem 
+                            icon={({color, size}) => (
+                                <Icon 
+                                name="bookmark-outline" 
+                                color={color}
+                                size={size}
+                                />
+                            )}
                             label="Bookmarks"
                             onPress={() => {props.navigation.navigate('BookmarkScreen')}}
                         />
                         <DrawerItem 
                             icon={({color, size}) => (
                                 <Icon 
-                                name="settings-outline" 
+                                name="bookmark-outline" 
+                                color={color}
+                                size={size}
+                                />
+                            )}
+                            label="Casino"
+                            onPress={() => {props.navigation.navigate('casino')}}
+                        />
+                        <DrawerItem 
+                            icon={({color, size}) => (
+                                <Icon 
+                                name="settings-helper" 
                                 color={color}
                                 size={size}
                                 />

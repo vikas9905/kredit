@@ -8,6 +8,7 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import Welcome from '../screens/welcome/welcome';
 import Home from '../screens/home/Home';
 import { DrawerLayout } from './DrawerNavigator';
+import Quiz from '../screens/games/quiz';
 // function Feed() {
 //   return (
 //     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
@@ -54,6 +55,17 @@ export const MyTabs = ({navigation}) => {
           ),
         }}
       />
+      {/* <Tab.Screen
+        name="quiz"
+        component={Quiz}
+        options={{
+          tabBarLabel: '',
+          headerShown:false,
+          tabBarIcon: ({ color, size }) => (
+            <MaterialIcons name="home" color={color} size={size} />
+          ),
+        }}
+      /> */}
      
       <Tab.Screen
         name="Profile"
