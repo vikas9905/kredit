@@ -7,6 +7,11 @@ import {
   Theme,
 } from "@react-navigation/native";
 import { Provider } from "react-redux";
+import {
+  MD3LightTheme,
+  Provider as PaperProvider,
+} from 'react-native-paper';
+import {Provider as MaterialProvider} from '@react-native-material/core';
 import AuthNavigator from './app/routings/AuthNavigator';
 import Welcome from './app/screens/welcome/welcome';
 import Header from './app/components/homeComponent';
@@ -18,6 +23,7 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 
 import * as SplashScreen from 'expo-splash-screen';
 import { useFonts } from 'expo-font';
+import {store} from './app/store/store';
 // MaterialIcons.loadFont()
 // Ionicons.loadFont()
 // FontAwesome.loadFont()
@@ -71,10 +77,16 @@ export default function App() {
         barStyle={statusBarStyle}
         showHideTransition={statusBarTransition}
         hidden={hidden} />
-        
-        <NavigationContainer theme={AppTheme}>
-         {<AuthNavigator/>}
-        </NavigationContainer>
+        {/* <PaperProvider theme={MD3LightTheme}> */}
+          <NavigationContainer theme={AppTheme}>
+
+            <Provider store={store}>
+              <MaterialProvider>
+                {<AuthNavigator/>}
+              </MaterialProvider>
+            </Provider>
+          </NavigationContainer>
+        {/* </PaperProvider>, */}
         
       
     </>

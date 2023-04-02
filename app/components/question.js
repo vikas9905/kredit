@@ -3,22 +3,28 @@ import { View, SafeAreaView, StyleSheet } from "react-native";
 import { Icon } from "@rneui/themed";
 import { Text, Stack } from "@react-native-material/core";
 import { RadioButton } from "react-native-paper";
+import { useSelector, useDispatch , useStore} from "react-redux";
 export const Question = (props) => {
     const {ques,index} = props
-    const [checked, setChecked] = useState('first');
+    const dispatch = useDispatch();
+    const {userAnswers} = useSelector(state=> state.questionReducer)
+    const [checked,setChecked] = useState()
     const getKeys = (obj,ind) =>{
-        return Object.keys(obj)[ind]
+        return obj[ind].id
     }
     const getVal = (obj,ind) =>{
-        return obj[Object.keys(obj)[ind]]
+        return obj[ind].optionValue
+    }
+    const setUserAnswers = (optionNum) =>{
+        userAnswers.set(props.ques.item.ques.id,optionNum)
     }
   return (
     <>
       <View style={{ flex: 1, marginTop: 15 }}>
-        <Text variant="h6">{props.ques.index +1 }.{props.ques.item.ques}</Text>
+        <Text variant="h6">{props.ques.index +1 }.{props.ques.item.ques.question}</Text>
         <View>
           <RadioButton.Group
-            onValueChange={(newValue) => setChecked(newValue)}
+            onValueChange={(newValue) => {setChecked(newValue);setUserAnswers(newValue)}}
             value={checked}
           >
             <View style={{ flexDirection: "row", alignItems: "center" }}>
@@ -31,7 +37,7 @@ export const Question = (props) => {
             </View>
             <View style={{ flexDirection: "row", alignItems: "center" }}>
               <RadioButton value={getKeys(props.ques.item.options,2)} />
-              <Text variant="subtitle1">{getVal(props.ques.item.options,3)}</Text>
+              <Text variant="subtitle1">{getVal(props.ques.item.options,2)}</Text>
             </View>
             <View style={{ flexDirection: "row", alignItems: "center" }}>
               <RadioButton value={getKeys(props.ques.item.options,3)} />
