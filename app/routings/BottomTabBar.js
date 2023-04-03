@@ -55,6 +55,17 @@ export const MyTabs = ({navigation}) => {
           ),
         }}
       />
+      <Tab.Screen
+        name="Wealth"
+        component={Home}
+        options={{
+          tabBarLabel: '',
+          headerShown:false,
+          tabBarIcon: ({ color, size }) => (
+            <MaterialIcons name="currency-rupee" color={color} size={size} />
+          ),
+        }}
+      />
       {/* <Tab.Screen
         name="quiz"
         component={Quiz}

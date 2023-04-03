@@ -18,19 +18,21 @@ import Emoji from 'react-native-emoji';
 export const Modal = (props) => {
   let explosion;
   const dispatch = useDispatch();
-  const {result} = useSelector(state=> state.questionReducer)
+  const {result,visible} = props
   const handleExplosion = () => {
     explosion && explosion.start();
   };
   const closeModal = () =>{
-    dispatch({type:'MODAL_CLOSE',payload:result})
+    dispatch({type:'MODAL_CLOSE'})
     props.navigation.navigate('Home');
   }
   if (props.type == "congrats" && props.result.data != undefined) {
+    console.log("result in modal",result)
+
     return (
       <>
         
-        <Dialog visible={result.showModal} onDismiss={() => {dispatch({type:'MODAL_CLOSE',payload:result});}}>
+        <Dialog visible={result.showModal} onDismiss={() => {closeModal();}}>
         {/* <ConfettiCannon
           count={200}
           origin={{ x: -10, y: 0 }}

@@ -1,8 +1,9 @@
 import { combineReducers,applyMiddleware,createStore } from 'redux';
 import thunk from 'redux-thunk';
-import {questionReducer} from '../reducers/quizReducer';
+import {questionReducer,quizReducer} from '../reducers/quizReducer';
 const reducer = combineReducers({
-    questionReducer
+    questionReducer,
+    quizReducer
 })
 
 export const store = createStore(reducer, applyMiddleware(thunk))

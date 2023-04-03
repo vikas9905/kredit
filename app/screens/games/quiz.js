@@ -12,24 +12,31 @@ import {store} from '../../store/store';
 import {LARGE_EXPLOSION} from '../../constant';
 import ConfettiCannon from 'react-native-confetti-cannon';
 import {Modal} from '../../components/modal';
-export const QuizScreen = ({navigation})=>{
+import axios from 'axios';
+export const QuizScreen = ({navigation,route})=>{
+    const {ques_id} = route.params;
+    // console.log(ques_id)
     const dispatch = useDispatch();
     const {data,userAnswers,isLoading,result} = useSelector(state=> state.questionReducer)
+    console.log("result_data",result)
     const [visible,setVisible] = useState(result.showModal);
     const checkResult = () =>{
         dispatch(ValidateAnswers(userAnswers))
     }
     useEffect(()=>{
-        dispatch(getQuestion())
+        dispatch(getQuestion(ques_id))
     },[])
     if(isLoading) {
         return (
+            <>
+            <Header name="Quiz" icon="arrow-back" navigation={navigation} />
             <Container>
                 <View style={{flex:1,alignItems:'center',justifyContent:'center'}}>
                     <ActivityIndicator size="large"/>
                     
                 </View>
             </Container>
+            </>
         )
     }
     return (
@@ -52,7 +59,7 @@ export const QuizScreen = ({navigation})=>{
             loadingIndicatorPosition="overlay"
             onPress = {() => {checkResult();}}
           />
-          <Modal visible={visible} result={result} navigation={navigation} type="congrats"/>
+          <Modal visible={result.showModal} result={result} navigation={navigation} type="congrats"/>
         </Container>
       </>
     );
