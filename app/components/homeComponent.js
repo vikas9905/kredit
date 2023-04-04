@@ -8,7 +8,7 @@ StyleProp,
 TextStyle,
 ViewStyle,
 } from 'react-native';
-import { Header as HeaderRNE, HeaderProps } from '@rneui/themed';
+import { Header as HeaderRNE, HeaderProps,Badge,Avatar } from '@rneui/themed';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons'; 
@@ -18,25 +18,63 @@ const Header = (props) =>  {
 
  const name = props.name
  const icon =props.icon
-return (
-
+ if(props.name == 'Home') {
+  return (
     <HeaderRNE
-      leftComponent={
-        {
-            icon: icon,
-            color: '#fff',
-            onPress: ()=>{
-              if(icon == 'menu'){
-                props.navigation.openDrawer();
-              }else{
-                props.navigation.goBack();
-              }
-            }
-        }
-      }
+      leftComponent={{
+        icon: icon,
+        color: "#fff",
+        onPress: () => {
+          if (icon == "menu") {
+            props.navigation.openDrawer();
+          } else {
+            props.navigation.goBack();
+          }
+        },
+      }}
       centerComponent={{ text: name, style: styles.heading }}
+      rightComponent={
+        // <View style={{ width: "50%" }}>
+          <TouchableOpacity onPress={() => console.log("click")}>
+            <View>
+              <MaterialIcons
+                name="notifications-none"
+                color="white"
+                size={25}
+                style={{marginTop:0,marginRight:5}}
+              />
+              <Badge
+                status="error"
+                value='0'
+                containerStyle={{ position: "absolute", top: -3, right: 0 }}
+              />
+            </View>
+          </TouchableOpacity>
+        // </View>
+      }
     />
+  );
+ }
+ return (
+
+  <HeaderRNE
+    leftComponent={
+      {
+          icon: icon,
+          color: '#fff',
+          onPress: ()=>{
+            if(icon == 'menu'){
+              props.navigation.openDrawer();
+            }else{
+              props.navigation.goBack();
+            }
+          }
+      }
+    }
+    centerComponent={{ text: name, style: styles.heading }}
+  />
 );
+
 };
 
 const styles = StyleSheet.create({

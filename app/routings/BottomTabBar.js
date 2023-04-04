@@ -9,6 +9,10 @@ import Welcome from '../screens/welcome/welcome';
 import Home from '../screens/home/Home';
 import { DrawerLayout } from './DrawerNavigator';
 import Quiz from '../screens/games/quiz';
+import Transaction from '../screens/transaction/transaction';
+import LeaderBoard from '../screens/leaderboard/leaderboard';
+import WheelOfFortuneGame from '../screens/games/wheelOfFortuneGame';
+import ScratchCardGame from '../screens/games/scratchCard';
 // function Feed() {
 //   return (
 //     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
@@ -48,7 +52,7 @@ export const MyTabs = ({navigation}) => {
         name="Home"
         component={Home}
         options={{
-          tabBarLabel: '',
+          tabBarLabel: 'Home',
           headerShown:false,
           tabBarIcon: ({ color, size }) => (
             <MaterialIcons name="home" color={color} size={size} />
@@ -56,36 +60,36 @@ export const MyTabs = ({navigation}) => {
         }}
       />
       <Tab.Screen
-        name="Wealth"
-        component={Home}
+        name="Earn"
+        component={Transaction}
         options={{
-          tabBarLabel: '',
+          tabBarLabel: 'Earnings',
           headerShown:false,
           tabBarIcon: ({ color, size }) => (
-            <MaterialIcons name="currency-rupee" color={color} size={size} />
+            <MaterialCommunityIcons name="currency-inr" color={color} size={size} />
           ),
         }}
       />
-      {/* <Tab.Screen
-        name="quiz"
-        component={Quiz}
+      <Tab.Screen
+        name="LeaderBoard"
+        component={LeaderBoard}
         options={{
-          tabBarLabel: '',
+          tabBarLabel: 'Leaderboard',
           headerShown:false,
           tabBarIcon: ({ color, size }) => (
-            <MaterialIcons name="home" color={color} size={size} />
+            <MaterialIcons name="leaderboard" color={color} size={size} />
           ),
         }}
-      /> */}
+      />
      
       <Tab.Screen
         name="Profile"
         component={Profile}
         options={{
-          tabBarLabel: '',
+          tabBarLabel: 'User',
           headerShown:false,
           tabBarIcon: ({ color, size }) => (
-            <MaterialIcons name="menu" color={color} size={size} />
+            <MaterialCommunityIcons name="account-settings" color={color} size={size} />
           ),
         }}
       />
