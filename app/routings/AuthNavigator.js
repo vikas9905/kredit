@@ -4,7 +4,7 @@ import MainStack from "./mainStack";
 import OnboardingNavigation from "./OnBoardingRoute";
 
 const AuthNavigator = () => {
-    const isLoggedIn = true;
+    const isLoggedIn = false;
   return (
     <View style={{ flex: 1 }}>
       {isLoggedIn ? <MainStack /> : <OnboardingNavigation />}
