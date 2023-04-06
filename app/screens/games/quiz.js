@@ -13,6 +13,13 @@ import {LARGE_EXPLOSION} from '../../constant';
 import ConfettiCannon from 'react-native-confetti-cannon';
 import {Modal} from '../../components/modal';
 import axios from 'axios';
+import Constants from 'expo-constants';
+import {
+  AdMobBanner,
+  AdMobInterstitial,
+  PublisherBanner,
+  AdMobRewarded
+} from "expo";
 export const QuizScreen = ({navigation,route})=>{
     const {ques_id} = route.params;
     // console.log(ques_id)
@@ -22,10 +29,41 @@ export const QuizScreen = ({navigation,route})=>{
     const [visible,setVisible] = useState(result.showModal);
     const checkResult = () =>{
         dispatch(ValidateAnswers(userAnswers))
+        showInterstitial();
     }
     useEffect(()=>{
         dispatch(getQuestion(ques_id))
     },[])
+    const componentDidMount = () => {
+      AdMobInterstitial.setTestDeviceID("EMULATOR");
+      // ALWAYS USE TEST ID for Admob ads
+      AdMobInterstitial.setAdUnitID(Constants.manifest?.extra?.ADD_UNIT_ID_FOR_INTER);
+      AdMobInterstitial.addEventListener("interstitialDidLoad", () =>
+        console.log("interstitialDidLoad")
+      );
+      AdMobInterstitial.addEventListener("interstitialDidFailToLoad", () =>
+        console.log("interstitialDidFailToLoad")
+      );
+      AdMobInterstitial.addEventListener("interstitialDidOpen", () =>
+        console.log("interstitialDidOpen")
+      );
+      AdMobInterstitial.addEventListener("interstitialDidClose", () =>
+        console.log("interstitialDidClose")
+      );
+      AdMobInterstitial.addEventListener("interstitialWillLeaveApplication", () =>
+        console.log("interstitialWillLeaveApplication")
+      );
+    }
+  const componentWillUnmount = () => {
+      AdMobInterstitial.removeAllListeners();
+    }
+    const bannerError = () => {
+      console.log("An error");
+      return;
+    }
+  const showInterstitial = () => {
+      AdMobInterstitial.requestAd(() => AdMobInterstitial.showAd());
+    }
     if(isLoading) {
         return (
             <>
@@ -60,11 +98,26 @@ export const QuizScreen = ({navigation,route})=>{
             onPress = {() => {checkResult();}}
           />
           <Modal visible={result.showModal} result={result} navigation={navigation} type="congrats"/>
+          {/* <AdMobBanner
+          style={styles.bottomBanner}
+          bannerSize="fullBanner"
+          adUnitID="ca-app-pub-2979993637425208/4663033032"
+          // Test ID, Replace with your-admob-unit-id
+          testDeviceID="ORGMJBEA99K7D6R4"
+          didFailToReceiveAdWithError={bannerError()}
+        /> */}
         </Container>
       </>
     );
 }
 
 const styles = StyleSheet.create({
-    
+  interstitialBanner: {
+    width: "100%",
+    marginLeft: 0
+  },
+  bottomBanner: {
+    position: "absolute",
+    bottom: 0
+  },
 })

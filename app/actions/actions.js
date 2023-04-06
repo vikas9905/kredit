@@ -1,6 +1,7 @@
 import axios from 'axios';
 import {Environment} from '../../environment';
-import {SUCCESS,FAILED,LOADING,RESULT_CHECK_LOADING,RESULT_SUCCESS,RESULT_FAILED,QUIZ_FAILED,QUIZ_SUCCESS,QUIZ_LOADING} from './actionTypes';
+import {SUCCESS,FAILED,LOADING,RESULT_CHECK_LOADING,RESULT_SUCCESS,RESULT_FAILED,QUIZ_FAILED,QUIZ_SUCCESS,QUIZ_LOADING,USER_SIGNIN_FAILED,USER_SIGNIN_LOADING,USER_SIGNIN_SUCCESS} from './actionTypes';
+import signInWithGoogle from '../firebase/firebase';
 
 const base_url =Environment.BASE_URL;
 
@@ -87,5 +88,16 @@ export const getQuizs = (user_id) => {
                 payload: []
             })
         }
+    }
+}
+
+export const googleSignIn = () =>{
+    return async (dispatch) => {
+        dispatch({type:USER_SIGNIN_LOADING})
+        signInWithGoogle.then((result)=>{
+            console.log(result)
+        }).catch((err)=>{
+            console.log(error)
+        })
     }
 }

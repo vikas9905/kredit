@@ -10,16 +10,17 @@ import {
   Text,
   Stack,
   Button,
-  ActivityIndicator,Box,Flex
+  ActivityIndicator,
 } from "@react-native-material/core";
 // import WheelOfFortune from 'react-native-wheel-of-fortune'
 import Emoji from "react-native-emoji";
 import Container from '../../container/container';
 import {getQuizs} from '../../actions/actions';
-export default Home = ({ navigation }) => {
+export default ListQuiz = ({ navigation }) => {
   const dispatch = useDispatch();
   const { quiz } = useSelector((state) => state.quizReducer);
-
+//   console.log("data>>",quiz.data)
+//   console.log("load",quiz.isLoading)
   useEffect(() => {
     dispatch(getQuizs(1234));
   }, []);
@@ -105,7 +106,7 @@ export default Home = ({ navigation }) => {
   if (quiz.isLoading) {
     return (
       <>
-        <Header name="Home" icon="menu" navigation={navigation} />
+        <Header name="Quiz" icon="menu" navigation={navigation} />
       <Container>
         <View
           style={{ flex: 1, alignItems: "center", justifyContent: "center" }}
@@ -116,16 +117,34 @@ export default Home = ({ navigation }) => {
       </>
     );
   }
- 
+  //   const wheelOptions = {
+  //     rewards: participants,
+  //     knobSize: 50,
+  //     borderWidth: 5,
+  //     borderColor: "#000",
+  //     innerRadius: 50,
+  //     duration: 4000,
+  //     backgroundColor: "transparent",
+  //     textAngle: "horizontal",
+  //     knobSource: require("../../../assets/onBoarding.png"),
+  //     getWinner: (value, index) => {
+  //       this.setState({ winnerValue: value, winnerIndex: index });
+  //     },
+  //     onRef: (ref) => (this.child = ref),
+  //   };
   return (
     <>
-      <Header name="Home" icon="menu" navigation={navigation} />
-      <Container>
-        <View  style={{flexDirection:'row',flex:1,marginTop:20}}>
-          <Box h={150} m={4} style={{ backgroundColor: "tomato",flex:1 }} onPress={()=>console.log("cli")} />
-          <Box h={150} m={4} style={{ backgroundColor: "tomato",flex:1 }} />
-        </View>
-      </Container>
+      <Header name="Quiz" icon="menu" navigation={navigation} />
+      {/* <Container style={{padding:0,paddingHorizontal:0}}> */}
+        <FlatList
+          data={quiz.data}
+          renderItem={(item) => <CardStyle quiz={item} />}
+          keyExtractor={(item) => item.id}
+          showsVerticalScrollIndicator={false}
+          refreshing={quiz.isLoading}
+          onRefresh={() => dispatch(getQuizs(1234))}
+        />
+      {/* </Container> */}
     </>
   );
 };

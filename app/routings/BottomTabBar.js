@@ -13,6 +13,7 @@ import Transaction from '../screens/transaction/transaction';
 import LeaderBoard from '../screens/leaderboard/leaderboard';
 import WheelOfFortuneGame from '../screens/games/wheelOfFortuneGame';
 import ScratchCardGame from '../screens/games/scratchCard';
+import ListQuiz from '../screens/games/listQuiz';
 // function Feed() {
 //   return (
 //     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>

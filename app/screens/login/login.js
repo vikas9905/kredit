@@ -13,6 +13,7 @@ import LoginScreen, { SocialButton } from "react-native-login-screen";
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { SocialIcon, SocialIconProps } from '@rneui/themed';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
+import { useSelector, useDispatch , useStore} from "react-redux";
 // import { GoogleSignin } from '@react-native-google-signin/google-signin';
 import {
   Backdrop,
@@ -23,6 +24,8 @@ import {
 import Icon from "@expo/vector-icons/MaterialCommunityIcons";
 import {Dimensions} from 'react-native';
 import {CustomSocialButton} from '../../components/socialButtons';
+import {googleSignIn} from '../../actions/actions';
+import {signInWithGoogl,signWithEmailPass,signInWithNum} from '../../firebase/firebase';
 // import { GoogleSignin, GoogleSigninButton } from '@react-native-google-signin/google-signin';
 
 export default function Login({navigation}) {
@@ -37,6 +40,8 @@ export default function Login({navigation}) {
     const hidden = false;
     const windowWidth = Dimensions.get('window').width;
     const windowHeight = Dimensions.get('window').height;
+    const dispatch = useDispatch();
+    const {} = useSelector(state=> state.questionReducer)
     
   return (
     
@@ -65,9 +70,9 @@ export default function Login({navigation}) {
     >
     </Backdrop>
     <View style={styles.container}>
-      <CustomSocialButton name='phone'   title='Login with Phone' onPress = {()=>{console.log("clicked")}} />
-      <CustomSocialButton name='google'   title='Login with Google' onPress = {()=>{console.log("clicked")}} />
-      <CustomSocialButton name='facebook'   title='Login with Facebook' onPress = {()=>{console.log("clicked")}} />
+      <CustomSocialButton name='phone'   title='Login with Phone' onPress = {()=>{signInWithNum()}} />
+      <CustomSocialButton name='envelope-o'   title='Login with Google' onPress = {()=>{dispatch(googleSignIn())}} />
+      <CustomSocialButton name='facebook'   title='Login with Facebook' onPress = {()=>{signWithEmailPass()}} />
     </View>
     </>
   );
