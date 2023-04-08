@@ -11,9 +11,11 @@ import {
     Box,Flex,Divider,ListItem,Avatar
   } from "@react-native-material/core";
 import { TextInput } from 'react-native-paper';
-import SelectDropdown from 'react-native-select-dropdown'
+import SelectDropdown from 'react-native-select-dropdown';
+import {useSelector} from 'react-redux';
 export default Profile = ({navigation})=>{
     const paymentOptions = ['Paytm','PhonePe','GooglePay']
+    const {theme,colors} = useSelector(state=>state.themeReducers)
     return (
       <>
         <Header name="Profile" icon="arrow-back" navigation={navigation} />
@@ -25,13 +27,14 @@ export default Profile = ({navigation})=>{
               flexDirection: "column",
               justifyContent: "center",
               alignItems: "center",
-              backgroundColor: "#397af8",
+              backgroundColor: theme.headerColor,
+              marginTop: -22
             }}
           >
             <Avatar
               image={{ uri: "https://mui.com/static/images/avatar/1.jpg" }}
             />
-            <Text variant="h6" color="#fff">
+            <Text variant="h6" color={theme.text}>
               Vikash
             </Text>
             <View
@@ -42,10 +45,10 @@ export default Profile = ({navigation})=>{
                 marginTop: 10,
               }}
             >
-              <Text variant="h6" color="#fff">
+              <Text variant="h6" color={theme.text}>
                 Total Earnings
               </Text>
-              <Text variant="h6" color="#fff" style={{ marginLeft: 15 }}>
+              <Text variant="h6" color={theme.text} style={{ marginLeft: 15 }}>
                 ₹100
               </Text>
             </View>

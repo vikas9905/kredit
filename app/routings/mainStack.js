@@ -13,6 +13,8 @@ import Profile from '../screens/proffile/proffile';
 import {QuizScreen} from '../screens/games/quiz';
 import { MyTabs } from './BottomTabBar';
 import {CasinoScreen} from '../screens/games/casino';
+import {ListQuiz} from '../screens/games/listQuiz';
+import {Transaction} from '../screens/transaction/transaction';
 const Stack = createStackNavigator();
 
 export default function MainStack() {
@@ -27,6 +29,7 @@ export default function MainStack() {
         {/* <Stack.Screen name="MyTabs" component={MyTabs} options={{headerShown:false}}/> */}
         <Stack.Screen name="DrawerLayout" component={DrawerLayout} options={{headerShown:false}}/>
         <Stack.Screen name="quiz" component={QuizScreen} options={{headerShown:false}} />
+        <Stack.Screen name="listQuiz" component={ListQuiz} options={{headerShown:false}} />
         <Stack.Screen name="casino" component={CasinoScreen} options={{headerShown:false}} />
         {/* <Stack.Screen name="Profile" component={Profile} options={{headerStyleInterpolator: HeaderStyleInterpolators.forUIKit,headerShown:false}}/> */}
         {/* <Stack.Screen name="Home" component={Home} options={{headerStyleInterpolator: HeaderStyleInterpolators.forUIKit,}}/> */}

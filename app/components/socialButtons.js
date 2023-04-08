@@ -2,11 +2,13 @@ import Icon from "@expo/vector-icons/MaterialCommunityIcons";
 import React, {useState} from 'react';
 import {View, Pressable,StatusBar,StyleSheet,TouchableOpacity,Text,Button} from 'react-native';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
-
+import {useTheme} from '@react-navigation/native';
+import {useSelector} from 'react-redux';
 export const CustomSocialButton = ({name,title,color,backgroundColor,onPress}) =>{
+    const {theme} = useSelector((state)=> state.themeReducers);
     return (
         <TouchableOpacity style={styles.container} >
-            <FontAwesome.Button onPress={onPress} color={color? color: '#fff'} name={name} backgroundColor={backgroundColor? backgroundColor: '#4285F4'} style={{fontFamily: "Roboto",height:50,justifyContent:'center',color:'red'}} > 
+            <FontAwesome.Button onPress={onPress} color={color? color: theme.text} name={name} backgroundColor={backgroundColor? backgroundColor: theme.colors.primaryDark} style={{fontFamily: "Roboto",height:50,justifyContent:'center'}} > 
                 {title}
             </FontAwesome.Button>
         </TouchableOpacity>

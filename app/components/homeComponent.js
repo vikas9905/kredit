@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {
 StyleSheet,
 View,
@@ -13,14 +13,25 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons'; 
 import * as Font from 'expo-font';
+import { useSelector, useDispatch , useStore} from "react-redux";
 import { DrawerActions } from '@react-navigation/native';
+import {theme} from '../theme';
+import { useTheme } from "@react-native-material/core";
+import {
+  DefaultTheme,
+  NavigationContainer,
+  Theme,
+} from "@react-navigation/native";
+import {theme as defaultTheme} from '../theme';
 const Header = (props) =>  {
-
+const { theme } = useSelector((state) => state.themeReducers);
  const name = props.name
  const icon =props.icon
  if(props.name == 'Home') {
   return (
     <HeaderRNE
+      containerStyle={[styles.headerContainer]}
+      statusBarProps={{color: theme.statusBarColor,backgroundColor:theme.statusBarColor}}
       leftComponent={{
         icon: icon,
         color: "#fff",
@@ -58,6 +69,8 @@ const Header = (props) =>  {
  return (
 
   <HeaderRNE
+    containerStyle={styles.headerContainer}
+    statusBarProps={{color: theme.statusBarColor,backgroundColor:theme.statusBarColor}}
     leftComponent={
       {
           icon: icon,
@@ -81,7 +94,7 @@ const styles = StyleSheet.create({
 headerContainer: {
   justifyContent: 'center',
   alignItems: 'center',
-  backgroundColor: '#397af8',
+  backgroundColor: defaultTheme.lightTheme.headerColor,
   marginBottom: 20,
   width: '100%',
   paddingVertical: 15,
@@ -101,6 +114,9 @@ subheaderText: {
   fontSize: 16,
   fontWeight: 'bold',
 },
+barStyle: {
+  backgroundColor: theme.statusBarColor
+}
 });
 
 export default Header;

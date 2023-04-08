@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { View, SafeAreaView, FlatList } from "react-native";
+import { View, SafeAreaView, FlatList,TouchableOpacity,StyleSheet,Image } from "react-native";
 // import auth from '@react-native-firebase/auth';
 import Header from "../../components/homeComponent";
 import { Card } from "@rneui/base";
@@ -16,9 +16,11 @@ import {
 import Emoji from "react-native-emoji";
 import Container from '../../container/container';
 import {getQuizs} from '../../actions/actions';
+import { MaterialCommunityIcons,Ionicons } from '@expo/vector-icons';
 export default Home = ({ navigation }) => {
   const dispatch = useDispatch();
   const { quiz } = useSelector((state) => state.quizReducer);
+  const { theme,colors } = useSelector((state) => state.themeReducers);
 
   useEffect(() => {
     dispatch(getQuizs(1234));
@@ -121,11 +123,42 @@ export default Home = ({ navigation }) => {
     <>
       <Header name="Home" icon="menu" navigation={navigation} />
       <Container>
-        <View  style={{flexDirection:'row',flex:1,marginTop:20}}>
-          <Box h={150} m={4} style={{ backgroundColor: "tomato",flex:1 }} onPress={()=>console.log("cli")} />
-          <Box h={150} m={4} style={{ backgroundColor: "tomato",flex:1 }} />
+        <View  style={{marginTop:20}}>
+          <View style={{flexDirection:'row'}}>
+            <TouchableOpacity underlayColor={colors.primaryDark} style={[styles.box,{backgroundColor:colors.primary}]}>
+              <View style={{alignItems:'center',justifyContent:'center',flex:1}}>
+                <MaterialCommunityIcons color='#fff' name="infinity" size={50} />
+                <Text variant="body1" color="#fff">Play More Win 2X</Text>
+              </View>
+            </TouchableOpacity>
+          </View>
+          <View style={{flexDirection:'row',marginTop:10}}>
+            <TouchableOpacity underlayColor={colors.primaryDark} style={[styles.box,{backgroundColor:colors.primary}]} onPress={()=>navigation.navigate('listQuiz')}>
+              <View style={{alignItems:'center',justifyContent:'center',flex:1}}>
+                <Image source={require("../../../assets/Quiz_white.png")}   style={{width: 50, height: 50}} />
+                <Text variant="body1" color="#fff">Quiz</Text>
+              </View>
+            </TouchableOpacity>
+          </View>
+          <View style={{flexDirection:'row',marginTop:10}}>
+            <TouchableOpacity underlayColor={colors.primaryDark} style={[styles.box,{backgroundColor:colors.primary}]} onPress={()=>console.log("Hello")}>
+              <View style={{alignItems:'center',justifyContent:'center',flex:1}}>
+                <Image source={require("../../../assets/globe_white.png")}   style={{width: 50, height: 50}} />
+                <Text variant="body1" color="#fff">Predict & Win</Text>
+              </View>
+            </TouchableOpacity>
+          </View>
+          
         </View>
       </Container>
     </>
   );
 };
+
+const styles = StyleSheet.create({
+  box:{
+    width:150,
+    height: 150,
+    flex:1
+  }
+})

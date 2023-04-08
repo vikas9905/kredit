@@ -8,6 +8,7 @@ export const Question = (props) => {
     const {ques,index} = props
     const dispatch = useDispatch();
     const {userAnswers} = useSelector(state=> state.questionReducer)
+    const {theme,colors} = useSelector(state => state.themeReducers)
     const [checked,setChecked] = useState()
     const getKeys = (obj,ind) =>{
         return obj[ind].id

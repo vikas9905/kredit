@@ -10,7 +10,7 @@ const Drawer = createDrawerNavigator();
 export const DrawerLayout = ({navigation}) =>{
     return (
         
-    <Drawer.Navigator screenOptions={{headerShown:false}} 
+    <Drawer.Navigator screenOptions={{headerShown:false}} style={{backgroundColor:'red'}} 
         drawerContent={(props) => <DrawerContent {...props} />} >
             <Drawer.Screen name="HomeDrawer" component={MyTabs} />
             <Drawer.Screen name="Profile1" component={Profile} />

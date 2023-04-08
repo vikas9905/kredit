@@ -1,8 +1,7 @@
 import React from 'react';
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, Image } from 'react-native';
 import {
     useTheme,
-    Avatar,
     Title,
     Caption,
     Paragraph,
@@ -11,12 +10,14 @@ import {
     TouchableRipple,
     Switch
 } from 'react-native-paper';
+import { Avatar } from "@react-native-material/core";
 import {
     DrawerContentScrollView,
     DrawerItem
 } from '@react-navigation/drawer';
-
+import { MaterialCommunityIcons, AntDesign ,Feather} from '@expo/vector-icons';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+
 
 export function DrawerContent(props) {
 
@@ -26,16 +27,14 @@ export function DrawerContent(props) {
 
     return(
         <View style={{flex:1}}>
-            <DrawerContentScrollView {...props}>
+            <DrawerContentScrollView {...props} style={{backgroundColor:'#fff'}}>
                 <View style={styles.drawerContent}>
                     <View style={styles.userInfoSection}>
                         <View style={{flexDirection:'row',marginTop: 15,}}>
-                            {/* <Avatar.Image 
-                                source={{
-                                    uri: 'https://api.adorable.io/avatars/50/abott@adorable.png'
-                                }}
+                            <Avatar
+                                image={{ uri: "https://mui.com/static/images/avatar/1.jpg" }}
                                 size={50}
-                            /> */}
+                            />
                             <View style={{marginLeft:15, flexDirection:'column'}}>
                                 <Title style={styles.title}>John Doe</Title>
                                 <Caption style={styles.caption}>@j_doe</Caption>
@@ -44,13 +43,13 @@ export function DrawerContent(props) {
 
                         <View style={styles.row}>
                             <View style={styles.section}>
-                                <Paragraph style={[styles.paragraph, styles.caption]}>80</Paragraph>
-                                <Caption style={styles.caption}>Following</Caption>
+                               <Text variant="h6">Total Earnings:</Text>
+                                <Text variant="h6" style={{marginLeft:15,color:'green'}}>₹100</Text>
                             </View>
-                            <View style={styles.section}>
+                            {/* <View style={styles.section}>
                                 <Paragraph style={[styles.paragraph, styles.caption]}>100</Paragraph>
                                 <Caption style={styles.caption}>Followers</Caption>
-                            </View>
+                            </View> */}
                         </View>
                     </View>
 
@@ -79,26 +78,19 @@ export function DrawerContent(props) {
                         />
                         <DrawerItem 
                             icon={({color, size}) => (
-                                <Icon 
-                                name="bookmark-outline" 
-                                color={color}
-                                size={size}
-                                />
+                                <MaterialCommunityIcons name="currency-inr" color={color} size={size} />
                             )}
-                            label="Quiz"
-                            onPress={() => {props.navigation.navigate('quiz')}}
+                            label="Earnings"
+                            onPress={() => {props.navigation.navigate('Earn')}}
                         />
                         <DrawerItem 
                             icon={({color, size}) => (
-                                <Icon 
-                                name="bookmark-outline" 
-                                color={color}
-                                size={size}
-                                />
+                                <Image source={require("../../assets/quiz.png")}   style={{width: 23, height: 23}}/>
                             )}
-                            label="Bookmarks"
-                            onPress={() => {props.navigation.navigate('BookmarkScreen')}}
+                            label="Quiz"
+                            onPress={() => {props.navigation.navigate('listQuiz')}}
                         />
+{/*                         
                         <DrawerItem 
                             icon={({color, size}) => (
                                 <Icon 
@@ -109,31 +101,21 @@ export function DrawerContent(props) {
                             )}
                             label="Casino"
                             onPress={() => {props.navigation.navigate('casino')}}
-                        />
+                        /> */}
                         <DrawerItem 
                             icon={({color, size}) => (
-                                <Icon 
-                                name="settings-helper" 
+                                <Feather 
+                                name="settings" 
                                 color={color}
                                 size={size}
                                 />
                             )}
                             label="Settings"
-                            onPress={() => {props.navigation.navigate('SettingsScreen')}}
+                            onPress={() => {props.navigation.navigate('Profile')}}
                         />
-                        <DrawerItem 
-                            icon={({color, size}) => (
-                                <Icon 
-                                name="account-check-outline" 
-                                color={color}
-                                size={size}
-                                />
-                            )}
-                            label="Support"
-                            onPress={() => {props.navigation.navigate('SupportScreen')}}
-                        />
+                    
                     </Drawer.Section>
-                    <Drawer.Section title="Preferences">
+                    {/* <Drawer.Section title="Preferences">
                         <TouchableRipple onPress={() => {}}>
                             <View style={styles.preference}>
                                 <Text>Dark Theme</Text>
@@ -142,7 +124,7 @@ export function DrawerContent(props) {
                                 </View>
                             </View>
                         </TouchableRipple>
-                    </Drawer.Section>
+                    </Drawer.Section> */}
                 </View>
             </DrawerContentScrollView>
             <Drawer.Section style={styles.bottomDrawerSection}>

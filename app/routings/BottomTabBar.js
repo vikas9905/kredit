@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Text, View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { MaterialCommunityIcons , Feather} from '@expo/vector-icons';
 import Profile from '../screens/proffile/proffile';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons'; 
 import Welcome from '../screens/welcome/welcome';
@@ -14,6 +14,8 @@ import LeaderBoard from '../screens/leaderboard/leaderboard';
 import WheelOfFortuneGame from '../screens/games/wheelOfFortuneGame';
 import ScratchCardGame from '../screens/games/scratchCard';
 import ListQuiz from '../screens/games/listQuiz';
+import LtrGame from '../screens/games/ltrGame';
+import {useSelector} from 'react-redux';
 // function Feed() {
 //   return (
 //     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
@@ -41,13 +43,19 @@ import ListQuiz from '../screens/games/listQuiz';
 const Tab = createBottomTabNavigator();
 
 export const MyTabs = ({navigation}) => {
+  const {theme,colors} = useSelector(state=>state.themeReducers);
   return (
     <Tab.Navigator
       initialRouteName="Home"
+      style={{backgroundColor:'red'}}
       screenOptions={{
-        tabBarActiveTintColor: '#e91e63',
-        headerShown:false
+        tabBarActiveTintColor: '#ffffff',
+        headerShown:false,
+        tabBarStyle:{
+        backgroundColor: theme.headerColor
+        }
       }}
+      
     >
       <Tab.Screen
         name="Home"
@@ -90,7 +98,7 @@ export const MyTabs = ({navigation}) => {
           tabBarLabel: 'User',
           headerShown:false,
           tabBarIcon: ({ color, size }) => (
-            <MaterialCommunityIcons name="account-settings" color={color} size={size} />
+            <Feather name="settings" color={color} size={size} />
           ),
         }}
       />

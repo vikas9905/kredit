@@ -30,23 +30,6 @@ export default LeaderBoard = ({navigation}) =>{
           >
             <Text variant="h6">Top Earning Users</Text>
             <Divider style={{ marginTop: 10, backgroundColor: "#000000" }} />
-            {/* <ListItem
-                leadingMode="avatar"
-                leading={
-                    <Avatar image={{ uri: "https://mui.com/static/images/avatar/1.jpg" }} />
-                }
-                trailingMode=""
-                trailing={
-                    // <Text variant="body1" color="green" >₹10000</Text>
-                    <View style={{flexDirection:'row',alignItems:'center',color:'green'}} size={100}>
-                    <FontAwesome name="rupee" font={30} color="green"/>
-                    <Text>10000</Text>
-                    </View>
-                }
-                color='green'
-                title="₹ 100"
-                secondaryText="Vikas"
-            /> */}
             <View style={{height:100,backgroundColor:'#fff',flexDirection:'row',justifyContent:'space-between',alignItems:'center',padding:5}}>
                 <Avatar image={{ uri: "https://mui.com/static/images/avatar/1.jpg" }} />
                 <Text variant="body1">Vikash Kumar</Text>

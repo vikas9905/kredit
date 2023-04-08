@@ -27,10 +27,16 @@ import {CustomSocialButton} from '../../components/socialButtons';
 import {googleSignIn} from '../../actions/actions';
 import {signInWithGoogl,signWithEmailPass,signInWithNum} from '../../firebase/firebase';
 // import { GoogleSignin, GoogleSigninButton } from '@react-native-google-signin/google-signin';
-
+import {
+  DefaultTheme,
+  NavigationContainer,
+  Theme,useTheme
+} from "@react-navigation/native";
+import {theme} from '../../theme';
 export default function Login({navigation}) {
     // const[email,setEmail] = useState('');
     // const[password,setPassword] = useState('');
+    // const theme = useTheme();
     const email ='';
     const pass='';
     const STYLES = ['default', 'dark-content', 'light-content'];

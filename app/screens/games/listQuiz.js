@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { View, SafeAreaView, FlatList } from "react-native";
+import { View, SafeAreaView, FlatList,TouchableOpacity } from "react-native";
 // import auth from '@react-native-firebase/auth';
 import Header from "../../components/homeComponent";
 import { Card } from "@rneui/base";
@@ -16,9 +16,10 @@ import {
 import Emoji from "react-native-emoji";
 import Container from '../../container/container';
 import {getQuizs} from '../../actions/actions';
-export default ListQuiz = ({ navigation }) => {
+export const ListQuiz = ({ navigation }) => {
   const dispatch = useDispatch();
   const { quiz } = useSelector((state) => state.quizReducer);
+  const {theme,colors} = useSelector(state => state.themeReducers)
 //   console.log("data>>",quiz.data)
 //   console.log("load",quiz.isLoading)
   useEffect(() => {
@@ -61,14 +62,14 @@ export default ListQuiz = ({ navigation }) => {
   };
   const CardStyle = ({ quiz }) => {
     return (
-      <Card
+      <TouchableOpacity  onPress={ () =>  navigation.navigate('quiz',{ques_id:quiz.item.id})}  underlayColor={colors.secondary}>
+        <Card
         containerStyle={{
           marginTop: 15,
           elevation: 10,
           borderColor: "#fff",
-          backgroundColor: "red",
+          backgroundColor: "#7267CB",
         }}
-        onPress={ () => console.log("pressed")}
       >
         <Card.Title>
           <View style={{flexDirection:'row',justifyContent:'space-between',alignItems:'center'}}>
@@ -98,15 +99,16 @@ export default ListQuiz = ({ navigation }) => {
             ₹ {quiz.item.total_coins}
           </Text>
           <Text color="white">{quiz.item.users_won} User Won</Text>
-          <Button variant="text" title="Start" onPress={()=> navigation.navigate('quiz',{ques_id:quiz.item.id})} />
+          <Button variant="text" color={theme.text} title="Start" onPress={()=> navigation.navigate('quiz',{ques_id:quiz.item.id})} />
         </View>
       </Card>
+      </TouchableOpacity>
     );
   };
   if (quiz.isLoading) {
     return (
       <>
-        <Header name="Quiz" icon="menu" navigation={navigation} />
+        <Header name="Quiz" icon="arrow-back" navigation={navigation} />
       <Container>
         <View
           style={{ flex: 1, alignItems: "center", justifyContent: "center" }}

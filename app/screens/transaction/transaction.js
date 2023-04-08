@@ -15,6 +15,7 @@ import {
 import {BottomSheetComponent} from '../../components/bottomSheet';
 import RBSheet from "react-native-raw-bottom-sheet";
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import {useSelector} from 'react-redux';
 
 export default Transaction = ({navigation})=>{
     const [isVisible,setIsVisible] = useState(false);
@@ -22,14 +23,16 @@ export default Transaction = ({navigation})=>{
     const [amountError,setAmountError] = useState('');
     const refRBSheet = useRef();
     const [index, setIndex] = React.useState(0);
+    const {theme,colors} = useSelector(state => state.themeReducers);
+    
     return (
       <>
         <Header name="Earnings" icon="arrow-back" navigation={navigation} />
-        <Container style={{backgroundColor:'#fff'}}>
+        <Container style={{backgroundColor:colors.background}}>
         <Flex fill >
           <Box
             h={120}
-            style={{ flex: 1, marginTop: 15, backgroundColor: "lightgreen" }}
+            style={{ flex: 1, marginTop: 15, backgroundColor: colors.primary }}
           >
             <View
               style={{
@@ -39,10 +42,10 @@ export default Transaction = ({navigation})=>{
                 alignItems: "center",
               }}
             >
-              <Text variant="h6" color="#fff">
+              <Text variant="h6" color={theme.text}>
                 Available Balance
               </Text>
-              <Text variant="h6" color="#fff">
+              <Text variant="h6" color={theme.text}>
                 ₹100
               </Text>
             </View>
@@ -51,7 +54,7 @@ export default Transaction = ({navigation})=>{
                 variant="text"
                 title="Withdraw"
                 onPress={() => refRBSheet.current.open()}
-                color="#fff"
+                color={theme.text}
               />
             </View>
           </Box>
@@ -109,9 +112,6 @@ export default Transaction = ({navigation})=>{
             />
           </Container>
         </RBSheet>
-        {/* <Container> */}
-
-        {/* </Container> */}
       </>
     );
 }

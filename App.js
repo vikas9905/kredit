@@ -6,7 +6,7 @@ import {
   NavigationContainer,
   Theme,
 } from "@react-navigation/native";
-import { Provider } from "react-redux";
+import { Provider,useSelector } from "react-redux";
 import {
   MD3LightTheme,
   Provider as PaperProvider,
@@ -20,27 +20,23 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome'; 
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons'; 
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'; 
-
+import { useTheme } from "@react-native-material/core";
 import * as SplashScreen from 'expo-splash-screen';
 import { useFonts } from 'expo-font';
 import {store} from './app/store/store';
+import {theme} from './app/theme';
+
+
 // MaterialIcons.loadFont()
 // Ionicons.loadFont()
 // FontAwesome.loadFont()
 // Feather.loadFont()
 // MaterialCommunityIcons.loadFont()
+
 const LoadFont = async () =>{
      Font.loadAsync({'MaterialIcons': require('./assets/fonts/MaterialIcons.ttf')})
 }
-const AppTheme = {
-  ...DefaultTheme,
-  colors: {
-    ...DefaultTheme.colors,
-    primary: "rgba(89, 86, 233, 1)",
-    text: "#868686",
-    background: "#F2F2F2",
-  },
-};
+
 
 export default function App() {
   // const fetchFonts = Font.loadAsync({
@@ -52,6 +48,16 @@ export default function App() {
   //   'material-community': require('./assets/fonts/MaterialCommunityIcons.ttf'),
   //   'Ionicons': require('./assets/fonts/Ionicons.ttf'),
   // });
+  const matTheme = useTheme();
+  const AppTheme = {
+    ...DefaultTheme,
+    ...matTheme,
+    ...theme.lightTheme,
+    colors: {
+      ...DefaultTheme.colors,
+      ...theme.colors.light
+    },
+  };
   const STYLES = ['default', 'dark-content', 'light-content'];
     const TRANSITIONS = ['fade', 'slide', 'none'];
     const statusBarStyle = STYLES[2];
@@ -66,14 +72,14 @@ export default function App() {
     if (!loaded) {
       return null;
     }
-    
+  
     
   return (
     < >
         {/* <SafeAreaView> */}
     <StatusBar
         animated={true}
-        backgroundColor="#61dafb"
+        backgroundColor={theme.lightTheme.statusBarColor}
         barStyle={statusBarStyle}
         showHideTransition={statusBarTransition}
         hidden={hidden} />
@@ -81,7 +87,7 @@ export default function App() {
           <NavigationContainer theme={AppTheme}>
 
             <Provider store={store}>
-              <MaterialProvider>
+              <MaterialProvider theme={AppTheme}> 
                 {<AuthNavigator/>}
               </MaterialProvider>
             </Provider>

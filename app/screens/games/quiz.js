@@ -29,7 +29,7 @@ export const QuizScreen = ({navigation,route})=>{
     const [visible,setVisible] = useState(result.showModal);
     const checkResult = () =>{
         dispatch(ValidateAnswers(userAnswers))
-        showInterstitial();
+        //showInterstitial();
     }
     useEffect(()=>{
         dispatch(getQuestion(ques_id))
