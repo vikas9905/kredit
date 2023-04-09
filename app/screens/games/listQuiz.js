@@ -16,14 +16,15 @@ import {
 import Emoji from "react-native-emoji";
 import Container from '../../container/container';
 import {getQuizs} from '../../actions/actions';
-export const ListQuiz = ({ navigation }) => {
+export const ListQuiz = ({ navigation,route }) => {
+  const {quiz_type} = route.params;
   const dispatch = useDispatch();
   const { quiz } = useSelector((state) => state.quizReducer);
   const {theme,colors} = useSelector(state => state.themeReducers)
-//   console.log("data>>",quiz.data)
-//   console.log("load",quiz.isLoading)
+  // console.log("data>>",quiz.data)
+  // console.log("load",quiz.isLoading)
   useEffect(() => {
-    dispatch(getQuizs(1234));
+    dispatch(getQuizs(1234,quiz_type));
   }, []);
   const participants = [
     "%10",
@@ -60,9 +61,15 @@ export const ListQuiz = ({ navigation }) => {
         return "Easy";
     }
   };
+  const navigateTo = (screen,data) =>{
+    requestAnimationFrame(()=>{
+      navigation.navigate('quiz',data)
+
+    })
+  }
   const CardStyle = ({ quiz }) => {
     return (
-      <TouchableOpacity  onPress={ () =>  navigation.navigate('quiz',{ques_id:quiz.item.id})}  underlayColor={colors.secondary}>
+      <TouchableOpacity  onPress={ () => navigateTo(quiz,{ques_id:quiz.item.id,quiz_type:quiz.item.quiz_type}) }  underlayColor={colors.secondary}>
         <Card
         containerStyle={{
           marginTop: 15,
@@ -136,7 +143,7 @@ export const ListQuiz = ({ navigation }) => {
   //   };
   return (
     <>
-      <Header name="Quiz" icon="menu" navigation={navigation} />
+      <Header name="Quiz" icon="arrow-back" navigation={navigation} />
       {/* <Container style={{padding:0,paddingHorizontal:0}}> */}
         <FlatList
           data={quiz.data}

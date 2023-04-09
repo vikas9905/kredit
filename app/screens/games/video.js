@@ -23,24 +23,11 @@ import {
   AdMobRewarded
 } from "expo";
 export const QuizScreen = ({navigation,route})=>{
-    const {ques_id,quiz_type} = route.params;
-    // console.log("quiz_type",quiz_type)
+    const {ques_id} = route.params;
     console.log(ques_id)
     const dispatch = useDispatch();
     const {data,userAnswers,isLoading,result} = useSelector(state=> state.questionReducer)
-    // console.log("result_data",result)
-    const [visible,setVisible] = useState(result.showModal);
-    const [mediaPlayerState,setState] = useState({});
-    const [isReady,setReady] = useState(false);
-    console.log(mediaPlayerState)
-    const checkResult = () =>{
-        dispatch(ValidateAnswers(userAnswers))
-        //showInterstitial();
-    }
     useEffect(()=>{
-        if(quiz_type == 'quiz') {
-          setReady(true);
-        }
         dispatch(getQuestion(ques_id))
     },[])
     const componentDidMount = () => {
@@ -73,7 +60,7 @@ export const QuizScreen = ({navigation,route})=>{
   const showInterstitial = () => {
       AdMobInterstitial.requestAd(() => AdMobInterstitial.showAd());
     }
-    if(isLoading) {
+    if(false) {
         return (
             <>
             <Header name="Quiz" icon="arrow-back" navigation={navigation} />
@@ -90,35 +77,7 @@ export const QuizScreen = ({navigation,route})=>{
       <>
         <Header name="Quiz" icon="arrow-back" navigation={navigation} />
         <Container>
-          { false && <View style={{height:250}}>
-            <VideoPlayerComponent state={setState} url="http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4" />
-          </View>
-          }
-          { !isReady && <View style={{height:250}}>
-            <AudioPlayer setState={setState} url="https://www.kozco.com/tech/LRMonoPhase4.mp3" />
-          </View>
-          }
-          {isReady && <FlatList
-            data={data}
-            renderItem={(item) => <Question ques={item} />}
-            keyExtractor={item => item.ques.id}
-            showsVerticalScrollIndicator = {false}
-            refreshing = {isLoading}
-            onRefresh = {()=> dispatch(getQuestion())}
-          />}
-          {isReady && <Button
-            style={{height:40,marginBottom:5}}
-            title="Check Result"
-            loading={result.isLoading}
-            loadingIndicatorPosition="overlay"
-            onPress = {() => {checkResult();}}
-          />}
-          {!isReady && <Button
-            style={{height:40,marginBottom:5}}
-            title="Next"
-            onPress = {() => setReady(true)}
-          />}
-          <Modal visible={result.showModal} result={result} navigation={navigation} type="congrats"/>
+          <VideoPlayerComponent url="http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4" />
           {/* <AdMobBanner
           style={styles.bottomBanner}
           bannerSize="fullBanner"

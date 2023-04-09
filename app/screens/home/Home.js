@@ -17,14 +17,28 @@ import Emoji from "react-native-emoji";
 import Container from '../../container/container';
 import {getQuizs} from '../../actions/actions';
 import { MaterialCommunityIcons,Ionicons } from '@expo/vector-icons';
+import { useIsReady } from '../../hooks/readyHook';
+
+const BusyIndicator = ({navigation}) =>{
+  return (
+    <>
+      <Header name="Home" icon="menu" navigation={navigation} />
+      <Container>
+        <View
+          style={{ flex: 1, alignItems: "center", justifyContent: "center" }}
+        >
+          <ActivityIndicator size="large" />
+        </View>
+      </Container>
+      </>
+  )
+}
+
 export default Home = ({ navigation }) => {
   const dispatch = useDispatch();
   const { quiz } = useSelector((state) => state.quizReducer);
   const { theme,colors } = useSelector((state) => state.themeReducers);
-
-  useEffect(() => {
-    dispatch(getQuizs(1234));
-  }, []);
+  // const isReady = useIsReady();
   const participants = [
     "%10",
     "%20",
@@ -104,28 +118,19 @@ export default Home = ({ navigation }) => {
       </Card>
     );
   };
-  if (quiz.isLoading) {
-    return (
-      <>
-        <Header name="Home" icon="menu" navigation={navigation} />
-      <Container>
-        <View
-          style={{ flex: 1, alignItems: "center", justifyContent: "center" }}
-        >
-          <ActivityIndicator size="large" />
-        </View>
-      </Container>
-      </>
-    );
+  const navigateTo = (screen,quiz_type) =>{
+    requestAnimationFrame(() => {
+      navigation.navigate(screen,{quiz_type:quiz_type})
+    });
   }
- 
+
   return (
     <>
       <Header name="Home" icon="menu" navigation={navigation} />
       <Container>
         <View  style={{marginTop:20}}>
           <View style={{flexDirection:'row'}}>
-            <TouchableOpacity underlayColor={colors.primaryDark} style={[styles.box,{backgroundColor:colors.primary}]}>
+            <TouchableOpacity underlayColor={colors.primaryDark} style={[styles.box,{backgroundColor:colors.primary}]} onPress={()=>navigateTo('listQuiz','kbc')}>
               <View style={{alignItems:'center',justifyContent:'center',flex:1}}>
                 <MaterialCommunityIcons color='#fff' name="infinity" size={50} />
                 <Text variant="body1" color="#fff">Play More Win 2X</Text>
@@ -133,7 +138,7 @@ export default Home = ({ navigation }) => {
             </TouchableOpacity>
           </View>
           <View style={{flexDirection:'row',marginTop:10}}>
-            <TouchableOpacity underlayColor={colors.primaryDark} style={[styles.box,{backgroundColor:colors.primary}]} onPress={()=>navigation.navigate('listQuiz')}>
+            <TouchableOpacity underlayColor={colors.primaryDark} style={[styles.box,{backgroundColor:colors.primary}]} onPress={()=> navigateTo('listQuiz','quiz')}>
               <View style={{alignItems:'center',justifyContent:'center',flex:1}}>
                 <Image source={require("../../../assets/Quiz_white.png")}   style={{width: 50, height: 50}} />
                 <Text variant="body1" color="#fff">Quiz</Text>
@@ -141,7 +146,7 @@ export default Home = ({ navigation }) => {
             </TouchableOpacity>
           </View>
           <View style={{flexDirection:'row',marginTop:10}}>
-            <TouchableOpacity underlayColor={colors.primaryDark} style={[styles.box,{backgroundColor:colors.primary}]} onPress={()=>console.log("Hello")}>
+            <TouchableOpacity underlayColor={colors.primaryDark} style={[styles.box,{backgroundColor:colors.primary}]} onPress={()=>navigateTo('listQuiz','predict')}>
               <View style={{alignItems:'center',justifyContent:'center',flex:1}}>
                 <Image source={require("../../../assets/globe_white.png")}   style={{width: 50, height: 50}} />
                 <Text variant="body1" color="#fff">Predict & Win</Text>

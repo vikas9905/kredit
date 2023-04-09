@@ -64,12 +64,12 @@ export const ValidateAnswers = (answers) =>{
     }
 }
 
-export const getQuizs = (user_id) => {
+export const getQuizs = (user_id,quiz_type) => {
     return async (dispatch) =>{
         try {
             dispatch({type:QUIZ_LOADING})
-            const resp = await axios.post(base_url+'/quiz/',{'user_id':user_id})
-            // console.log(resp.data)
+            const resp = await axios.post(base_url+'/quiz/',{'user_id':user_id,'quiz_type':quiz_type})
+            console.log(resp)
             if(resp.status == 200) {
                 return dispatch({
                     type: QUIZ_SUCCESS,

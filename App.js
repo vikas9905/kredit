@@ -25,8 +25,10 @@ import * as SplashScreen from 'expo-splash-screen';
 import { useFonts } from 'expo-font';
 import {store} from './app/store/store';
 import {theme} from './app/theme';
-
-
+import { useScreens } from 'react-native-screens';
+import {enableScreens} from 'react-native-screens'
+enableScreens(false) 
+// useScreens();
 // MaterialIcons.loadFont()
 // Ionicons.loadFont()
 // FontAwesome.loadFont()

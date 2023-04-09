@@ -16,6 +16,8 @@ import {BottomSheetComponent} from '../../components/bottomSheet';
 import RBSheet from "react-native-raw-bottom-sheet";
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import {useSelector} from 'react-redux';
+import {VideoPlayerComponent} from '../../components/videoPlayer';
+import {AudioPlayer} from '../../components/audioPlayer';
 
 export default Transaction = ({navigation})=>{
     const [isVisible,setIsVisible] = useState(false);

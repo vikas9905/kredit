@@ -11,7 +11,7 @@ const initialState = {
 }
 
 export const themeReducers = (state = initialState, action) => {
-    console.log("in theme reducers",state)
+    // console.log("in theme reducers",state)
     switch(action.type){
         case DARK_THEME:
             return {
