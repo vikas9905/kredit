@@ -97,7 +97,7 @@ export default Transaction = ({navigation})=>{
               placeholder="UPI NUMBER"
               renderErrorMessage={false}
               errorMessage={upiError}
-              selectionColor={"red"}
+              selectionColor={theme.headerColor}
             />
             <Input placeholder="Name" renderErrorMessage={false} />
             <Input

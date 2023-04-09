@@ -13,7 +13,6 @@ import {
 } from 'react-native-paper';
 import {Provider as MaterialProvider} from '@react-native-material/core';
 import AuthNavigator from './app/routings/AuthNavigator';
-import Welcome from './app/screens/welcome/welcome';
 import Header from './app/components/homeComponent';
 import Feather from 'react-native-vector-icons/Feather'; 
 import Ionicons from 'react-native-vector-icons/Ionicons'; 

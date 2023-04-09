@@ -7,8 +7,6 @@ import {
 import React from "react";
 import { StatusBar, StyleSheet, Text, View } from "react-native";
 import  publicRoutes  from "./publicRoute";
-import SignUp from '../screens/signup/signup';
-import Welcome from '../screens/welcome/welcome';
 import Login from '../screens/login/login'
 import config from '../config'
 const Stack = createStackNavigator();
@@ -22,9 +20,7 @@ const OnboardingNavigation = () => {
             const {name, component} = route;
             return <Stack.Screen key={key} name={name} component={component} />;
             })} */}
-            <Stack.Screen  name="Welcome" component={Welcome} options={{headerStyleInterpolator: HeaderStyleInterpolators.forUIKit,}}/>
             <Stack.Screen  name="Login" component={Login} options={{headerStyleInterpolator: HeaderStyleInterpolators.forUIKit,}}/>
-            <Stack.Screen  name="SignUp" component={SignUp} options={{headerStyleInterpolator: HeaderStyleInterpolators.forUIKit,}}/>
         </Stack.Navigator>
       
     

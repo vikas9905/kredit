@@ -6,7 +6,6 @@ import {
     TouchableOpacity,
     View,
 } from 'react-native';
-import { CurvedBottomBar } from 'react-native-curved-bottom-bar';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { NavigationContainer } from '@react-navigation/native';
 

@@ -10,7 +10,6 @@ import { useSelector, useDispatch , useStore} from "react-redux";
 import {getQuestion,ValidateAnswers} from '../../actions/actions';
 import {store} from '../../store/store';
 import {LARGE_EXPLOSION} from '../../constant';
-import ConfettiCannon from 'react-native-confetti-cannon';
 import {Modal} from '../../components/modal';
 import axios from 'axios';
 import Constants from 'expo-constants';

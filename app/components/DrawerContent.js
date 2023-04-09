@@ -88,7 +88,7 @@ export function DrawerContent(props) {
                                 <Image source={require("../../assets/quiz.png")}   style={{width: 23, height: 23}}/>
                             )}
                             label="Quiz"
-                            onPress={() => {props.navigation.navigate('listQuiz')}}
+                            onPress={() => {props.navigation.navigate('listQuiz',{quiz_type:'kbc'})}}
                         />
 {/*                         
                         <DrawerItem 

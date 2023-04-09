@@ -9,7 +9,7 @@ import {scale} from 'react-native-size-matters';
 // import Feather from 'react-native-vector-icons/Feather';
 //  import {AlertHelper} from '../../utils/AlertHelper'
 import Container from '../../container/container';
-import LoginScreen, { SocialButton } from "react-native-login-screen";
+// import LoginScreen, { SocialButton } from "react-native-login-screen";
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { SocialIcon, SocialIconProps } from '@rneui/themed';
 import FontAwesome from '@expo/vector-icons/FontAwesome';

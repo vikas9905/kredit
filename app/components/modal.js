@@ -1,5 +1,4 @@
 // import { Button, Dialog, Portal } from 'react-native-paper';
-import ConfettiCannon from "react-native-confetti-cannon";
 import React, { useState, useEffect } from "react";
 import {
   Text,

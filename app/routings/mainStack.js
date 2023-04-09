@@ -2,8 +2,6 @@ import React from 'react';
 import {createStackNavigator, HeaderStyleInterpolators} from '@react-navigation/stack';
 import {NavigationContainer} from '@react-navigation/native';
 import  routeList  from './route';
-import SignUp from '../screens/signup/signup';
-import Welcome from '../screens/welcome/welcome';
 import Login from '../screens/login/login';
 import Home from '../screens/home/Home';
 import { fromLeft, zoomIn, zoomOut } from 'react-navigation-transitions';
@@ -30,7 +28,6 @@ export default function MainStack() {
         <Stack.Screen name="DrawerLayout" component={DrawerLayout} options={{headerShown:false}}/>
         <Stack.Screen name="quiz" component={QuizScreen} options={{headerShown:false}} />
         <Stack.Screen name="listQuiz" component={ListQuiz} options={{headerShown:false}} />
-        <Stack.Screen name="casino" component={CasinoScreen} options={{headerShown:false}} />
         {/* <Stack.Screen name="Profile" component={Profile} options={{headerStyleInterpolator: HeaderStyleInterpolators.forUIKit,headerShown:false}}/> */}
         {/* <Stack.Screen name="Home" component={Home} options={{headerStyleInterpolator: HeaderStyleInterpolators.forUIKit,}}/> */}
        
