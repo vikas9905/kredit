@@ -22,7 +22,7 @@ import {
   AdMobRewarded
 } from "expo";
 export const QuizScreen = ({navigation,route})=>{
-    const {ques_id,quiz_type} = route.params;
+    const {ques_id,quiz_type,duration} = route.params;
     // console.log("quiz_type",quiz_type)
     console.log(ques_id)
     const dispatch = useDispatch();
@@ -31,7 +31,7 @@ export const QuizScreen = ({navigation,route})=>{
     const [visible,setVisible] = useState(result.showModal);
     const [mediaPlayerState,setState] = useState({});
     const [isReady,setReady] = useState(false);
-    console.log(mediaPlayerState)
+    const[countDown,setCountDown] = useState(duration);
     const checkResult = () =>{
         dispatch(ValidateAnswers(userAnswers))
         //showInterstitial();
@@ -41,6 +41,7 @@ export const QuizScreen = ({navigation,route})=>{
           setReady(true);
         }
         dispatch(getQuestion(ques_id))
+        setCountDown()
     },[])
     const componentDidMount = () => {
       AdMobInterstitial.setTestDeviceID("EMULATOR");
@@ -103,7 +104,7 @@ export const QuizScreen = ({navigation,route})=>{
             keyExtractor={item => item.ques.id}
             showsVerticalScrollIndicator = {false}
             refreshing = {isLoading}
-            onRefresh = {()=> dispatch(getQuestion())}
+            onRefresh = {()=> dispatch(getQuestion(ques_id))}
           />}
           {isReady && <Button
             style={{height:40,marginBottom:5}}

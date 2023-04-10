@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "666405881801",
+    "project_id": "quizgame-434b0",
+    "storage_bucket": "quizgame-434b0.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:666405881801:android:6d8bdbbeeacfc4e09e8a18",
+        "android_client_info": {
+          "package_name": "com.truepromise.kredit"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "666405881801-0p0jhpmb043iml6m2gq8oejan4l76geu.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.truepromise.kredit",
+            "certificate_hash": "89f8d7cb05ae8bbb57b44cb537a0c4fa7c73f149"
+          }
+        },
+        {
+          "client_id": "666405881801-5muefnt9281taqbbn2mtlb2l7vvk3a1j.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD_GzNy2izZJq-9rvHu0rrcMXKd_XcFa4E"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "666405881801-5muefnt9281taqbbn2mtlb2l7vvk3a1j.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

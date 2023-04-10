@@ -14,18 +14,21 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { SocialIcon, SocialIconProps } from '@rneui/themed';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import { useSelector, useDispatch , useStore} from "react-redux";
-// import { GoogleSignin } from '@react-native-google-signin/google-signin';
+import * as WebBrowser from "expo-web-browser";
+import * as Google from "expo-auth-session/providers/google";
+import { FirebaseRecaptchaVerifierModal } from "expo-firebase-recaptcha";
 import {
   Backdrop,
   BackdropSubheader,
   AppBar,
-  IconButton,Text
+  IconButton,Text,Button
 } from "@react-native-material/core";
+import Constants from 'expo-constants';
 import Icon from "@expo/vector-icons/MaterialCommunityIcons";
 import {Dimensions} from 'react-native';
 import {CustomSocialButton} from '../../components/socialButtons';
 import {googleSignIn} from '../../actions/actions';
-import {signInWithGoogl,signWithEmailPass,signInWithNum} from '../../firebase/firebase';
+import {signInWithGoogl,signWithEmailPass,signInWithNum,firebaseConfig,signInwithPhone} from '../../firebase/firebase';
 // import { GoogleSignin, GoogleSigninButton } from '@react-native-google-signin/google-signin';
 import {
   DefaultTheme,
@@ -33,6 +36,10 @@ import {
   Theme,useTheme
 } from "@react-navigation/native";
 import {theme} from '../../theme';
+import { TextInput } from 'react-native-paper';
+
+WebBrowser.maybeCompleteAuthSession();
+
 export default function Login({navigation}) {
     // const[email,setEmail] = useState('');
     // const[password,setPassword] = useState('');
@@ -47,6 +54,38 @@ export default function Login({navigation}) {
     const windowWidth = Dimensions.get('window').width;
     const windowHeight = Dimensions.get('window').height;
     const dispatch = useDispatch();
+    const[accessToken,setAccessToken] = useState(null)
+    const[user,setUser] = useState(null);
+    const[sendOtp,setOtp] = useState(false);
+    const recaptchaVerifier = React.useRef(null);
+    const [phoneNumber, setPhoneNumber] = React.useState();
+    const [verificationId, setVerificationId] = React.useState();
+    const [verificationCode, setVerificationCode] = React.useState()
+    // const [request, response, promptAsync] = Google.useAuthRequest({
+    //   clientId: Constants.manifest?.extra?.webClientId,
+    //   androidClientId: Constants.manifest?.extra?.androidClientId
+    // });
+    // useEffect(() => {
+    //   if (response?.type === "success") {
+    //     setAccessToken(response.authentication.accessToken);
+    //     accessToken && getUserInfo();
+    //   }
+    // }, [response, accessToken]);
+    const getUserInfo = async () => {
+      try {
+        const response = await fetch(
+          "https://www.googleapis.com/userinfo/v2/me",
+          {
+            headers: { Authorization: `Bearer ${accessToken}` },
+          }
+        );
+  
+        const user = await response.json();
+        setUser(user);
+      } catch (error) {
+        // Add your own error handler here
+      }
+    };
     const {} = useSelector(state=> state.questionReducer)
     
   return (
@@ -76,9 +115,35 @@ export default function Login({navigation}) {
     >
     </Backdrop>
     <View style={styles.container}>
-      <CustomSocialButton name='phone'   title='Login with Phone' onPress = {()=>{signInWithNum()}} />
-      <CustomSocialButton name='envelope-o'   title='Login with Google' onPress = {()=>{dispatch(googleSignIn())}} />
-      <CustomSocialButton name='facebook'   title='Login with Facebook' onPress = {()=>{signWithEmailPass()}} />
+    <View style={{ marginTop: 10 }}>
+                {!sendOtp && <>
+                  <TextInput
+                    mode="outlined"
+                    label="NUMBER"
+                    style={{ marginTop: 10 }}/>
+                   <FirebaseRecaptchaVerifierModal
+                      ref={recaptchaVerifier}
+                      firebaseConfig={firebaseConfig}
+                      // attemptInvisibleVerification
+                    /></>
+                }
+                {sendOtp && 
+                <TextInput
+                  mode="outlined"
+                  label="OTP"
+                  style={{ marginTop: 10 }}
+                />
+                }
+
+                
+                
+    </View>
+      {sendOtp && <Button variant="text" title="resend" style={{padding:0,justifyContent:'flex-start',width:100,marginLeft:-20}} />}
+      {!sendOtp && <CustomSocialButton name='phone'   title='Login with Phone' onPress = {()=>{setOtp(true);signInWithNum('+917992367559',recaptchaVerifier.current)}} />}
+      {sendOtp && <CustomSocialButton   title='Verify' onPress = {()=>{setOtp(true)}} />}
+      {sendOtp && <CustomSocialButton name='phone'   title='change number' onPress = {()=>{setOtp(false)}} />}
+      {/* <CustomSocialButton name='envelope-o'   title='Login with Google' onPress = {()=>{}} /> */}
+      {/* <CustomSocialButton name='facebook'   title='Login with Facebook' onPress = {()=>{signWithEmailPass()}} /> */}
     </View>
     </>
   );

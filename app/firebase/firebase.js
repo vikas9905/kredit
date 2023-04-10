@@ -3,7 +3,7 @@ import { initializeApp } from "firebase/app";
 import { getAuth, signInWithPopup, GoogleAuthProvider ,RecaptchaVerifier, createUserWithEmailAndPassword,signInWithPhoneNumber} from "firebase/auth";
 import Constants from 'expo-constants';
 import firebase from 'firebase/compat/app';
-
+// import * as firebase from 'firebase';
 const firebaseConfig = {
   apiKey: Constants.manifest?.extra?.firebaseApiKey,
   authDomain: Constants.manifest?.extra?.firebaseAuthDomain,
@@ -25,6 +25,7 @@ if (firebase.apps.length === 0) {
 
 const auth = getAuth(app);
 const provider = new GoogleAuthProvider();
+
 
 const signInWithGoogl = async () =>{
     try{
@@ -62,13 +63,24 @@ const signWithEmailPass = async () => {
     }
 }
 const recaptchaVerifier = null;
-const signInWithNum = async () =>{
+const signInWithNum = async (num,Verify) =>{
+  const auth = getAuth()
     try{
-        const resp = await signInWithPhoneNumber(auth, '+919142083460',recaptchaVerifier)
+        console.log("sending...",num)
+        // console.log("verify",Verify)
+        const resp = await signInWithPhoneNumber(auth, num, Verify)
         console.log(resp)
     }catch(e){
         console.log(e)
     }
 }
+const signInwithPhone = (num,verify) =>{
+  const phoneProvider = new firebase.auth.PhoneAuthProvider();
+    phoneProvider
+      .verifyPhoneNumber(num,verify)
+      .then((res)=>{
+        console.log(res)
+      });
+}
 
-export {auth,signInWithGoogl,signWithEmailPass,signInWithNum};
+export {auth,signInWithGoogl,signWithEmailPass,signInWithNum,firebaseConfig,signInwithPhone};

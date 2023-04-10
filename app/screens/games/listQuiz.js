@@ -69,7 +69,7 @@ export const ListQuiz = ({ navigation,route }) => {
   }
   const CardStyle = ({ quiz }) => {
     return (
-      <TouchableOpacity  onPress={ () => navigateTo(quiz,{ques_id:quiz.item.id,quiz_type:quiz.item.quiz_type}) }  underlayColor={colors.secondary}>
+      <TouchableOpacity  onPress={ () => navigateTo(quiz,{ques_id:quiz.item.id,quiz_type:quiz.item.quiz_type,duration:quiz.item.duration}) }  underlayColor={colors.secondary}>
         <Card
         containerStyle={{
           marginTop: 15,
@@ -106,7 +106,7 @@ export const ListQuiz = ({ navigation,route }) => {
             ₹ {quiz.item.total_coins}
           </Text>
           <Text color="white">{quiz.item.users_won} User Won</Text>
-          <Button variant="text" color={theme.text} title="Start" onPress={()=> navigation.navigate('quiz',{ques_id:quiz.item.id})} />
+          <Button variant="text" color={theme.text} title="Start" onPress={()=> navigation.navigate('quiz',{ques_id:quiz.item.id,quiz_type:quiz.item.quiz_type,duration:quiz.item.duration})} />
         </View>
       </Card>
       </TouchableOpacity>
@@ -151,7 +151,7 @@ export const ListQuiz = ({ navigation,route }) => {
           keyExtractor={(item) => item.id}
           showsVerticalScrollIndicator={false}
           refreshing={quiz.isLoading}
-          onRefresh={() => dispatch(getQuizs(1234))}
+          onRefresh={() => dispatch(getQuizs(1234,quiz_type))}
         />
       {/* </Container> */}
     </>
