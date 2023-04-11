@@ -50,7 +50,7 @@ export default function App() {
   //   'Ionicons': require('./assets/fonts/Ionicons.ttf'),
   // });
   const matTheme = useTheme();
-  console.log("Apptheme",matTheme)
+  // console.log("Apptheme",matTheme)
   const AppTheme = {
     ...DefaultTheme,
     ...matTheme,

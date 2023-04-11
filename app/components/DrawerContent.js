@@ -17,13 +17,16 @@ import {
 } from '@react-navigation/drawer';
 import { MaterialCommunityIcons, AntDesign ,Feather} from '@expo/vector-icons';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import {AsyncStorage} from 'react-native';
 
-
-export function DrawerContent(props) {
+export function DrawerContent({navigation,props}) {
 
     const paperTheme = useTheme();
 
-
+    const signOut = async () =>{
+        await AsyncStorage.removeItem('user_details');
+        navigation.navigate('Login')
+    }
 
     return(
         <View style={{flex:1}}>
@@ -43,8 +46,8 @@ export function DrawerContent(props) {
 
                         <View style={styles.row}>
                             <View style={styles.section}>
-                               <Text variant="h6">Total Earnings:</Text>
-                                <Text variant="h6" style={{marginLeft:15,color:'green'}}>₹100</Text>
+                               <Text >Total Earnings:</Text>
+                                <Text style={{marginLeft:15,color:'green'}}>₹100</Text>
                             </View>
                             {/* <View style={styles.section}>
                                 <Paragraph style={[styles.paragraph, styles.caption]}>100</Paragraph>
@@ -137,7 +140,7 @@ export function DrawerContent(props) {
                         />
                     )}
                     label="Sign Out"
-                    onPress={() => {}}
+                    onPress={() => {signOut()}}
                 />
             </Drawer.Section>
         </View>

@@ -22,7 +22,7 @@ export const Question = (props) => {
   return (
     <>
       <View style={{ flex: 1, marginTop: 15 }}>
-        <Text variant="h6">{props.ques.index +1 }.{props.ques.item.ques.question}</Text>
+        <Text >{props.ques.index +1 }.{props.ques.item.ques.question}</Text>
         <View>
           <RadioButton.Group
             onValueChange={(newValue) => {setChecked(newValue);setUserAnswers(newValue)}}
@@ -30,19 +30,19 @@ export const Question = (props) => {
           >
             <View style={{ flexDirection: "row", alignItems: "center" }}>
               <RadioButton value={getKeys(props.ques.item.options,0)} />
-              <Text variant="subtitle1">{getVal(props.ques.item.options,0)}</Text>
+              <Text >{getVal(props.ques.item.options,0)}</Text>
             </View>
             <View style={{ flexDirection: "row", alignItems: "center" }}>
               <RadioButton value={getKeys(props.ques.item.options,1)}/>
-              <Text variant="subtitle1">{getVal(props.ques.item.options,1)}</Text>
+              <Text >{getVal(props.ques.item.options,1)}</Text>
             </View>
             <View style={{ flexDirection: "row", alignItems: "center" }}>
               <RadioButton value={getKeys(props.ques.item.options,2)} />
-              <Text variant="subtitle1">{getVal(props.ques.item.options,2)}</Text>
+              <Text >{getVal(props.ques.item.options,2)}</Text>
             </View>
             <View style={{ flexDirection: "row", alignItems: "center" }}>
               <RadioButton value={getKeys(props.ques.item.options,3)} />
-              <Text variant="subtitle1">{getVal(props.ques.item.options,3)}</Text>
+              <Text >{getVal(props.ques.item.options,3)}</Text>
             </View>
           </RadioButton.Group>
         </View>

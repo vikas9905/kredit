@@ -88,7 +88,7 @@ export default Home = ({ navigation }) => {
         <Card.Title>
           <View style={{flexDirection:'row',justifyContent:'space-between',alignItems:'center'}}>
             {/* <View style={{flexDirection:'row'}}>
-                <Text variant="h6" color="white">
+                <Text  color="white">
                  Quiz
                 </Text>
                 <Emoji name="money_mouth_face" style={{ fontSize: 25 }} />
@@ -109,7 +109,7 @@ export default Home = ({ navigation }) => {
             textColor: "#fff",
           }}
         >
-          <Text variant="h4" color="white">
+          <Text  color="white">
             ₹ {quiz.item.total_coins}
           </Text>
           <Text color="white">{quiz.item.users_won} User Won</Text>
@@ -133,7 +133,7 @@ export default Home = ({ navigation }) => {
             <TouchableOpacity underlayColor={colors.primaryDark} style={[styles.box,{backgroundColor:colors.primary}]} onPress={()=>navigateTo('listQuiz','kbc')}>
               <View style={{alignItems:'center',justifyContent:'center',flex:1}}>
                 <MaterialCommunityIcons color='#fff' name="infinity" size={50} />
-                <Text variant="body1" color="#fff">Play More Win 2X</Text>
+                <Text  color="#fff">Play More Win 2X</Text>
               </View>
             </TouchableOpacity>
           </View>
@@ -141,7 +141,7 @@ export default Home = ({ navigation }) => {
             <TouchableOpacity underlayColor={colors.primaryDark} style={[styles.box,{backgroundColor:colors.primary}]} onPress={()=> navigateTo('listQuiz','quiz')}>
               <View style={{alignItems:'center',justifyContent:'center',flex:1}}>
                 <Image source={require("../../../assets/Quiz_white.png")}   style={{width: 50, height: 50}} />
-                <Text variant="body1" color="#fff">Quiz</Text>
+                <Text  color="#fff">Quiz</Text>
               </View>
             </TouchableOpacity>
           </View>
@@ -149,7 +149,7 @@ export default Home = ({ navigation }) => {
             <TouchableOpacity underlayColor={colors.primaryDark} style={[styles.box,{backgroundColor:colors.primary}]} onPress={()=>navigateTo('listQuiz','predict')}>
               <View style={{alignItems:'center',justifyContent:'center',flex:1}}>
                 <Image source={require("../../../assets/globe_white.png")}   style={{width: 50, height: 50}} />
-                <Text variant="body1" color="#fff">Predict & Win</Text>
+                <Text  color="#fff">Predict & Win</Text>
               </View>
             </TouchableOpacity>
           </View>

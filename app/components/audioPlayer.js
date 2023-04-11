@@ -93,7 +93,7 @@ export const AudioPlayer = ({name,title,color,backgroundColor,onPress,url,setSta
                         variant="determinate"
                     />
                 </View>
-                    <Text variant="body1" style={{marginTop:20}} color="error">Note: Audio will be played only one time</Text>
+                    <Text  style={{marginTop:20}} color="error">Note: Audio will be played only one time</Text>
                 </View>
                 
             }

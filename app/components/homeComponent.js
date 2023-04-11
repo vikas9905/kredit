@@ -23,8 +23,12 @@ import {
   Theme,
 } from "@react-navigation/native";
 import {theme as defaultTheme} from '../theme';
-const Header = (props) =>  {
+const Header = (props,{navigation}) =>  {
 const { theme } = useSelector((state) => state.themeReducers);
+const {userDetails} = useSelector(state=> state.userReducer);
+if(userDetails.user_id == undefined) {
+  navigation.navigate('Login');
+}
  const name = props.name
  const icon =props.icon
  if(props.name == 'Home') {

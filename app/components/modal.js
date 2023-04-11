@@ -41,8 +41,8 @@ export const Modal = (props) => {
           <DialogHeader title="Congratulations" />
           <DialogContent>
             <Stack spacing={2}>
-              <Text variant="h5">Congrats you Win</Text>
-              <Text variant="h3">₹ {props.result.data.coin}</Text>
+              <Text >Congrats you Win</Text>
+              <Text >₹ {props.result.data.coin}</Text>
               <View style={{flexDirection:'row',justifyContent:'space-between'}}>
               <Emoji name="clap" style={{fontSize: 30}} />
               <Emoji name="clap" style={{fontSize: 30}} />

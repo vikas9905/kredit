@@ -28,6 +28,7 @@ export default function MainStack() {
         <Stack.Screen name="DrawerLayout" component={DrawerLayout} options={{headerShown:false}}/>
         <Stack.Screen name="quiz" component={QuizScreen} options={{headerShown:false}} />
         <Stack.Screen name="listQuiz" component={ListQuiz} options={{headerShown:false}} />
+        <Stack.Screen  name="Login" component={Login} options={{headerStyleInterpolator: HeaderStyleInterpolators.forUIKit,}}/>
         {/* <Stack.Screen name="Profile" component={Profile} options={{headerStyleInterpolator: HeaderStyleInterpolators.forUIKit,headerShown:false}}/> */}
         {/* <Stack.Screen name="Home" component={Home} options={{headerStyleInterpolator: HeaderStyleInterpolators.forUIKit,}}/> */}
        

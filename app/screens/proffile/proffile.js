@@ -34,7 +34,7 @@ export default Profile = ({navigation})=>{
             <Avatar
               image={{ uri: "https://mui.com/static/images/avatar/1.jpg" }}
             />
-            <Text variant="h6" color={theme.text}>
+            <Text color={theme.text}>
               Vikash
             </Text>
             <View
@@ -45,17 +45,17 @@ export default Profile = ({navigation})=>{
                 marginTop: 10,
               }}
             >
-              <Text variant="h6" color={theme.text}>
+              <Text  color={theme.text}>
                 Total Earnings
               </Text>
-              <Text variant="h6" color={theme.text} style={{ marginLeft: 15 }}>
+              <Text  color={theme.text} style={{ marginLeft: 15 }}>
                 ₹100
               </Text>
             </View>
           </View>
           <View style={{ flex: 2, marginTop: 20, justifyContent: "center" }}>
             <Container style={{ padding: 10 }}>
-              <Text variant="h6">Edit payment Details</Text>
+              <Text >Edit payment Details</Text>
               <View style={{ marginTop: 10 }}>
                 <TextInput
                   mode="outlined"

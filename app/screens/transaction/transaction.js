@@ -44,10 +44,10 @@ export default Transaction = ({navigation})=>{
                 alignItems: "center",
               }}
             >
-              <Text variant="h6" color={theme.text}>
+              <Text  color={theme.text}>
                 Available Balance
               </Text>
-              <Text variant="h6" color={theme.text}>
+              <Text  color={theme.text}>
                 ₹100
               </Text>
             </View>
@@ -64,12 +64,12 @@ export default Transaction = ({navigation})=>{
             fill
             style={{ flex: 4, marginTop: 10 }}
           >
-            <Text variant="h6">History</Text>
+            <Text >History</Text>
             <Divider style={{ marginTop: 10, backgroundColor: "#000000" }} />
               <ListItem
                 leadingMode="avatar"
                 leading={
-                  <Text variant="h6"color='green'>₹ 100</Text>
+                  <Text color='green'>₹ 100</Text>
                 }
                 title="Coins Credited"
               />

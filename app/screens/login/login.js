@@ -37,6 +37,7 @@ import {
 } from "@react-navigation/native";
 import {theme} from '../../theme';
 import { TextInput } from 'react-native-paper';
+import {AsyncStorage} from 'react-native';
 
 WebBrowser.maybeCompleteAuthSession();
 
@@ -87,6 +88,11 @@ export default function Login({navigation}) {
       }
     };
     const {} = useSelector(state=> state.questionReducer)
+    const loginUser = async () =>{
+      setOtp(true);
+      let user_details = JSON.stringify({'user_id':'1234'})
+      await AsyncStorage.setItem('user_details',user_details)
+    }
     
   return (
     
@@ -109,7 +115,7 @@ export default function Login({navigation}) {
       revealed={true}
       backLayer={<View style={{ height: windowHeight/3 }} >
         <View style={{alignItems:'center',justifyContent:'center',flex:1}} >
-          <Text variant="h5" color='#fff' >LOGIN</Text>
+          <Text  color='#fff' >LOGIN</Text>
         </View>
       </View>}
     >
@@ -140,7 +146,7 @@ export default function Login({navigation}) {
     </View>
       {sendOtp && <Button variant="text" title="resend" style={{padding:0,justifyContent:'flex-start',width:100,marginLeft:-20}} />}
       {!sendOtp && <CustomSocialButton name='phone'   title='Login with Phone' onPress = {()=>{setOtp(true);signInWithNum('+917992367559',recaptchaVerifier.current)}} />}
-      {sendOtp && <CustomSocialButton   title='Verify' onPress = {()=>{setOtp(true)}} />}
+      {sendOtp && <CustomSocialButton   title='Verify' onPress = {()=>{loginUser()}} />}
       {sendOtp && <CustomSocialButton name='phone'   title='change number' onPress = {()=>{setOtp(false)}} />}
       {/* <CustomSocialButton name='envelope-o'   title='Login with Google' onPress = {()=>{}} /> */}
       {/* <CustomSocialButton name='facebook'   title='Login with Facebook' onPress = {()=>{signWithEmailPass()}} /> */}

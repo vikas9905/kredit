@@ -81,7 +81,7 @@ export const ListQuiz = ({ navigation,route }) => {
         <Card.Title>
           <View style={{flexDirection:'row',justifyContent:'space-between',alignItems:'center'}}>
             {/* <View style={{flexDirection:'row'}}>
-                <Text variant="h6" color="white">
+                <Text  color="white">
                  Quiz
                 </Text>
                 <Emoji name="money_mouth_face" style={{ fontSize: 25 }} />
@@ -102,7 +102,7 @@ export const ListQuiz = ({ navigation,route }) => {
             textColor: "#fff",
           }}
         >
-          <Text variant="h4" color="white">
+          <Text color="white">
             ₹ {quiz.item.total_coins}
           </Text>
           <Text color="white">{quiz.item.users_won} User Won</Text>
