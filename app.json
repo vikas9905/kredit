@@ -1,0 +1,16 @@
+{
+  "name": "kredit",
+  "displayName": "kredit",
+  "react-native-google-mobile-ads": {
+    "android_app_id": "ca-app-pub-2979993637425208~4085869415"  
+  },
+  "expo": {
+      "android": {
+        "googleServicesFile": "./google-services.json"
+      },
+      "ios": {
+        "googleServicesFile": "./GoogleService-Info.plist"
+      },
+      "plugins": ["@react-native-google-signin/google-signin"]
+  }
+}
