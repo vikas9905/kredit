@@ -14,9 +14,47 @@ import {
 import { TextInput } from 'react-native-paper';
 import SelectDropdown from 'react-native-select-dropdown';
 import {useSelector} from 'react-redux';
+import {getUserDetails,updateUserPaymentOption,setUserPaymentOption} from '../../actions/actions';
+import {BusyIndicator} from '../../components/busyIndicator';
 export default Profile = ({navigation})=>{
-    const paymentOptions = ['Paytm','PhonePe','GooglePay']
+    const paymentOptions = ['Paytm','PhonePe']
     const {theme,colors} = useSelector(state=>state.themeReducers)
+    const {userDetails} = useSelector(state => state.userReducer)
+    const [upiError,setUpiError] = useState(false)
+    const [upiNumber,setUpiNumber] = useState()
+    const [name,setName] = useState(userDetails.user_name);
+    const [paymentProvider,setPaymentProvider] = useState();
+    const [updatingDetails,setLoading] = useState(false);
+    console.log("userDetails in profile",userDetails)
+    const onUpiTextChange = (text) =>{
+      if(isNaN(text)){
+        setUpiError(true);
+      }else{
+        setUpiError(false);
+      }
+      setUpiNumber(text)
+    }
+    const updateUserPaymentDetails = () =>{
+      const data = {
+        user_id: userDetails.user_id,
+        name: name,
+        payment_num: upiNumber,
+        provider: paymentProvider
+      }
+      if(userDetails.paymentDetails?.payment_num == undefined) {
+        dispatch(setUserPaymentOption(data))
+      }else{
+        dispatch(updateUserPaymentOption(data))
+      }
+    }
+    useEffect(()=>{
+      getUserDetails(userDetails.user_id)
+    },[])
+    if(userDetails.loading){
+      return (
+        <BusyIndicator navigation={navigation} name="Profile" icon="arrow-back" />
+      )
+    }
     return (
       <>
         <Header name="Profile" icon="arrow-back" navigation={navigation} />
@@ -33,10 +71,10 @@ export default Profile = ({navigation})=>{
             }}
           >
             <Avatar
-              image={{ uri: "https://mui.com/static/images/avatar/1.jpg" }}
+              image={{ uri: userDetails?.profile_pic || "https://mui.com/static/images/avatar/1.jpg" }}
             />
             <Text color={theme.text}>
-              Vikash
+              {userDetails?.user_name || 'Guest'}
             </Text>
             <View
               style={{
@@ -50,7 +88,7 @@ export default Profile = ({navigation})=>{
                 Total Earnings
               </Text>
               <Text  color={theme.text} style={{ marginLeft: 15 }}>
-                ₹100
+                ₹{userDetails?.total_coins || 0}
               </Text>
             </View>
           </View>
@@ -62,18 +100,21 @@ export default Profile = ({navigation})=>{
                   mode="outlined"
                   label="Name"
                   style={{ marginTop: 10 }}
+                  onChangeText = {(text)=>setName(text)}
                 />
                 <TextInput
                   mode="outlined"
                   label="UPI NUMBER"
                   style={{ marginTop: 10 }}
+                  error={upiError}
+                  onChangeText={(text)=>{onUpiTextChange(text)}}
                 />
                 <SelectDropdown
                   data={paymentOptions}
                   buttonStyle={styles.selectButton}
                   buttonTextStyle ={styles.selectButtonText}
                   onSelect={(selectedItem, index) => {
-                    console.log(selectedItem, index);
+                    setPaymentProvider(index+1);
                   }}
                   defaultButtonText="Select Payment Options"
                   buttonTextAfterSelection={(selectedItem, index) => {
@@ -83,7 +124,8 @@ export default Profile = ({navigation})=>{
                     return item;
                   }}
                 />
-                <Button variant="contained" title="SUBMIT" style={{marginTop:20}}></Button>
+                <Button variant="contained" title="SUBMIT" style={{marginTop:20}} loading={userDetails.paymentDetails.loading}
+                loadingIndicatorPosition="overlay" onPress={()=>updateUserPaymentDetails()}></Button>
               </View>
             </Container>
           </View>

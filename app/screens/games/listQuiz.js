@@ -22,10 +22,11 @@ export const ListQuiz = ({ navigation,route }) => {
   const dispatch = useDispatch();
   const { quiz } = useSelector((state) => state.quizReducer);
   const {theme,colors} = useSelector(state => state.themeReducers)
+  const {userDetails} = useSelector(state => state.userReducer)
   // console.log("data>>",quiz.data)
   // console.log("load",quiz.isLoading)
   useEffect(() => {
-    dispatch(getQuizs(1234,quiz_type));
+    dispatch(getQuizs(userDetails.user_id,quiz_type));
   }, []);
   const participants = [
     "%10",
@@ -127,21 +128,6 @@ export const ListQuiz = ({ navigation,route }) => {
       </>
     );
   }
-  //   const wheelOptions = {
-  //     rewards: participants,
-  //     knobSize: 50,
-  //     borderWidth: 5,
-  //     borderColor: "#000",
-  //     innerRadius: 50,
-  //     duration: 4000,
-  //     backgroundColor: "transparent",
-  //     textAngle: "horizontal",
-  //     knobSource: require("../../../assets/onBoarding.png"),
-  //     getWinner: (value, index) => {
-  //       this.setState({ winnerValue: value, winnerIndex: index });
-  //     },
-  //     onRef: (ref) => (this.child = ref),
-  //   };
   return (
     <>
       <Header name="Quiz" icon="arrow-back" navigation={navigation} />
@@ -152,7 +138,7 @@ export const ListQuiz = ({ navigation,route }) => {
           keyExtractor={(item) => item.id}
           showsVerticalScrollIndicator={false}
           refreshing={quiz.isLoading}
-          onRefresh={() => dispatch(getQuizs(1234,quiz_type))}
+          onRefresh={() => dispatch(getQuizs(userDetails.user_id,quiz_type))}
         />
       {/* </Container> */}
     </>

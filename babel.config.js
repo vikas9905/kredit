@@ -17,5 +17,5 @@ module.exports = {
       // "verbose": false
     }]
   ],
-  "plugins": ["@react-native-google-signin/google-signin"]
+  // "plugins": ["@react-native-google-signin/google-signin"]
 };

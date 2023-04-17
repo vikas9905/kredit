@@ -1,3 +1,4 @@
+/*eslint-disable*/
 export const colors = {
     light: {
         primary: '#7267CB',

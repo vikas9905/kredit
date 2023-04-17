@@ -10,6 +10,7 @@ import { StatusBar, StyleSheet, Text, View } from "react-native";
 import  publicRoutes  from "./publicRoute";
 import Login from '../screens/login/login'
 import config from '../config'
+import Home from '../screens/home/Home';
 const Stack = createStackNavigator();
 const OnboardingNavigation = () => {
 //   const { primary } = useTheme().colors;
@@ -17,10 +18,6 @@ const OnboardingNavigation = () => {
 
       
         <Stack.Navigator screenOptions={{headerShown: false}}>
-            {/* {publicRoutes?.map((route, key) => {
-            const {name, component} = route;
-            return <Stack.Screen key={key} name={name} component={component} />;
-            })} */}
             <Stack.Screen  name="Login" component={Login} options={{headerStyleInterpolator: HeaderStyleInterpolators.forUIKit,}}/>
         </Stack.Navigator>
       

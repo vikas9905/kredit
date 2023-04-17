@@ -64,16 +64,24 @@ const signWithEmailPass = async () => {
     }
 }
 const recaptchaVerifier = null;
-const signInWithNum = async (num,Verify) =>{
+const signInWithNum = async (num) =>{
   const auth = getAuth()
+    // try{
+    //     console.log("sending...",num)
+    //     // console.log("verify",Verify)
+    //     const resp = await signInWithPhoneNumber(auth, num, null)
+    //     console.log("resp>>",resp)
+    // }catch(e){
+    //     console.log("error>>",e)
+    // }
     try{
-        console.log("sending...",num)
-        // console.log("verify",Verify)
-        const resp = await signInWithPhoneNumber(auth, num, Verify)
-        console.log(resp)
+      const confirmation = await auth.signInWithPhoneNumber(num);
+      // console.log(confirmation)
+      // setConfirm(confirmation);
     }catch(e){
-        console.log(e)
+      console.log(e)
     }
+      
 }
 const signInwithPhone = (num,verify) =>{
   const phoneProvider = new firebase.auth.PhoneAuthProvider();

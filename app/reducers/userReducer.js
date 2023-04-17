@@ -1,10 +1,15 @@
 /*eslint-disable*/
 import {USER_DETAILS_FAILED,USER_DETAILS_LOADING,USER_DETAILS_SUCCESS,USER_HISTORY_FAILED,USER_HISTORY_LOADING,
 USER_HISTORY_SUCCESS,USER_LEADERBOARD_LOADING,USER_LEADERBOARD_FAILED,USER_LEADERBOARD_SUCCESS,
-USER_ORDER_LOADING,USER_ORDER_SUCCESS,USER_ORDER_FAILED} from '../actions/actionTypes';
+USER_ORDER_LOADING,USER_ORDER_SUCCESS,USER_ORDER_FAILED,USER_PAYMENT_FAILED,USER_PAYMENT_LOADING,USER_PAYMENT_SUCCESS} from '../actions/actionTypes';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 const initialState = {
     userDetails: {
-        loading:false,
+        loading:true,
+        paymentDetails:{
+            loading:false
+        }
     },
     order: {
         loading:false,
@@ -22,8 +27,12 @@ export const userReducer = (state=initialState,action) =>{
         case USER_DETAILS_SUCCESS:
             return {
                 ...state,
+                isLoggedIn:true,
                 userDetails:{
-                    ...action.payload,
+                    ...action.payload.data.user,
+                    paymentDetails:{
+                        ...action.payload.data.paymentDetails,
+                    },
                     loading: false
                 }
             }
@@ -39,6 +48,7 @@ export const userReducer = (state=initialState,action) =>{
         case USER_DETAILS_FAILED:
             return {
                 ...state,
+                isLoggedIn: false,
                 userDetails:{
                     loading:false
                 }
@@ -119,6 +129,41 @@ export const userReducer = (state=initialState,action) =>{
                 }
             }
             break;
+        case USER_PAYMENT_LOADING:
+            return {
+                ...state,
+                userDetails:{
+                    ...state.userDetails,
+                    paymentDetails:{
+                        ...state.userDetails.paymentDetails,
+                        loading:true
+                    }
+                }
+            }
+            break;
+        case USER_PAYMENT_SUCCESS:
+            return {
+                ...state,
+                userDetails:{
+                    ...state.userDetails,
+                    paymentDetails:{
+                        ...action.payload.data,
+                        loading:false
+                    }
+                }
+            }
+            break;
+        case USER_PAYMENT_FAILED:
+            return {
+                ...state,
+                userDetails:{
+                    ...state.userDetails,
+                    paymentDetails:{
+                        ...state.userDetails.paymentDetails,
+                        loading:false
+                    }
+                }
+            }
     
         default:
             return {

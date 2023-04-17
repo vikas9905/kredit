@@ -1,39 +1,23 @@
 /*eslint-disable*/
-import React, {useState} from 'react';
+import React, {useState,useEffect} from 'react';
 import {View, Pressable,StatusBar,StyleSheet} from 'react-native';
-// import {scale} from 'react-native-size-matters';
-// import Container from '../../components/Container';
-// import CustomInput from '../../components/CustomInput';
-// import CustomButton from '../../components/CustomButton';
-// import Label from '../../components/Label';
-// import {appColors, shadow} from '../../utils/appColors';
-// import Feather from 'react-native-vector-icons/Feather';
-//  import {AlertHelper} from '../../utils/AlertHelper'
+import auth from '@react-native-firebase/auth';
 import Container from '../../container/container';
-// import LoginScreen, { SocialButton } from "react-native-login-screen";
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { SocialIcon, SocialIconProps } from '@rneui/themed';
-// import FontAwesome from '@expo/vector-icons/FontAwesome';
 import { useSelector, useDispatch , useStore} from "react-redux";
-// import * as WebBrowser from "expo-web-browser";
-// import * as Google from "expo-auth-session/providers/google";
-// import { FirebaseRecaptchaVerifierModal } from "expo-firebase-recaptcha";
-import { GoogleSignin,statusCode } from '@react-native-google-signin/google-signin';
-
-GoogleSignin.configure();
+import { GoogleSignin,statusCodes } from '@react-native-google-signin/google-signin';
 import {
   Backdrop,
   BackdropSubheader,
   AppBar,
   IconButton,Text,Button
 } from "@react-native-material/core";
-// import Constants from 'expo-constants';
-// import Icon from "@expo/vector-icons/MaterialCommunityIcons";
 import {Dimensions} from 'react-native';
 import {CustomSocialButton} from '../../components/socialButtons';
 import {googleSignIn} from '../../actions/actions';
-// import {signInWithGoogl,signWithEmailPass,signInWithNum,firebaseConfig,signInwithPhone} from '../../firebase/firebase';
-// import { GoogleSignin, GoogleSigninButton } from '@react-native-google-signin/google-signin';
+import {USER_DETAILS_SUCCESS} from '../../actions/actionTypes';
+import {signInWithGoogl,signWithEmailPass,signInWithNum,firebaseConfig,signInwithPhone} from '../../firebase/firebase';
 import {
   DefaultTheme,
   NavigationContainer,
@@ -41,141 +25,222 @@ import {
 } from "@react-navigation/native";
 import {theme} from '../../theme';
 import { TextInput } from 'react-native-paper';
-import {AsyncStorage} from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import {webCliendId,androidClientId} from '@env';
+import {SnackbarMsg} from '../../components/snackbarMsg';
+import {setUserDetails,getUserDetails} from '../../actions/actions';
+import {
+  ActivityIndicator,Box,Flex
+} from "@react-native-material/core";
 
-// WebBrowser.maybeCompleteAuthSession();
+GoogleSignin.configure({
+  // scopes: ['https://www.googleapis.com/auth/drive.readonly'], // what API you want to access on behalf of the user, default is email and profile
+  webClientId: webCliendId, // client ID of type WEB for your server (needed to verify user ID and offline access)
+  offlineAccess: true, // if you want to access Google API on behalf of the user FROM YOUR SERVER
+  androidClientId: androidClientId,
+  // hostedDomain: '', // specifies a hosted domain restriction
+  // forceCodeForRefreshToken: true, // [Android] related to `serverAuthCode`, read the docs link below *.
+  // accountName: '', // [Android] specifies an account name on the device that should be used
+  // iosClientId: '<FROM DEVELOPER CONSOLE>', // [iOS] if you want to specify the client ID of type iOS (otherwise, it is taken from GoogleService-Info.plist)
+  // googleServicePlistPath: '', // [iOS] if you renamed your GoogleService-Info file, new name here, e.g. GoogleService-Info-Staging
+  // openIdRealm: '', // [iOS] The OpenID2 realm of the home web server. This allows Google to include the user's OpenID Identifier in the OpenID Connect ID token.
+  // profileImageSize: 120, // [iOS] The desired height (and width) of the profile image. Defaults to 120px
+});
 
 export default function Login({navigation}) {
-    // const[email,setEmail] = useState('');
-    // const[password,setPassword] = useState('');
-    // const theme = useTheme();
-    const email ='';
-    const pass='';
-    const STYLES = ['default', 'dark-content', 'light-content'];
-    const TRANSITIONS = ['fade', 'slide', 'none'];
-    const statusBarStyle = STYLES[2];
-    const statusBarTransition = TRANSITIONS[2];
-    const hidden = false;
-    const windowWidth = Dimensions.get('window').width;
+   
     const windowHeight = Dimensions.get('window').height;
-    const dispatch = useDispatch();
-    const[accessToken,setAccessToken] = useState(null)
-    const[user,setUser] = useState(null);
-    const[sendOtp,setOtp] = useState(false);
-    const recaptchaVerifier = React.useRef(null);
-    const [phoneNumber, setPhoneNumber] = React.useState();
-    const [verificationId, setVerificationId] = React.useState();
-    const [verificationCode, setVerificationCode] = React.useState()
-    // const [request, response, promptAsync] = Google.useAuthRequest({
-    //   clientId: Constants.manifest?.extra?.webClientId,
-    //   androidClientId: Constants.manifest?.extra?.androidClientId
-    // });
-    // useEffect(() => {
-    //   if (response?.type === "success") {
-    //     setAccessToken(response.authentication.accessToken);
-    //     accessToken && getUserInfo();
-    //   }
-    // }, [response, accessToken]);
-    const getUserInfo = async () => {
+    const[otpScreen,setOtpScreen] = useState(false);
+    const[phoneNumber,setPhoneNumber] = useState();
+    const[otp,setOtp] = useState();
+    const {isLoggedIn,userDetails} = useSelector(state=> state.userReducer)
+    console.log(isLoggedIn)
+    const [phoneNumberError,setPhoneError] = useState(false);
+    const [otpError,setOtpError] = useState(false)
+    const[confirm,setConfirm] = useState();
+    const[showSanck,setSnack] = useState(false);
+    const[snackMsg,setSnackMsg] = useState('');
+    const[isLoading,setLoading] = useState(true);
+    const onPhoneNumberChange = (num) =>{
+      if(isNaN(num)){
+        setPhoneError(true);
+      }else{
+        setPhoneError(false)
+      }
+      setPhoneNumber(num);
+    }
+    const onOtpChange = (num) =>{
+      if(isNaN(num)){
+        setOtpError(true);
+      }else{
+        setOtpError(false)
+      }
+      setOtp(num);
+    }
+    getCurrentUserInfo = async () => {
       try {
-        const response = await fetch(
-          "https://www.googleapis.com/userinfo/v2/me",
-          {
-            headers: { Authorization: `Bearer ${accessToken}` },
-          }
-        );
-  
-        const user = await response.json();
-        setUser(user);
+        const userInfo = await GoogleSignin.signInSilently();
+        const user_details = {
+          user_name: userInfo.user.name,
+          user_id: userInfo.user.id,
+          email: userInfo.user.email,
+          profile_pic: userInfo.user.photo,
+        }
+        setLoading(false);
+        // dispatch({type:USER_DETAILS_SUCCESS,payload:user_details})
+        dispatch(getUserDetails(userInfo.user.id))
+        await AsyncStorage.setItem('isLoggedIn','true');
+        await AsyncStorage.setItem('user_details',JSON.stringify(user_details));
       } catch (error) {
-        // Add your own error handler here
+        setLoading(false);
+        if (error.code === statusCodes.SIGN_IN_REQUIRED) {
+          // user has not signed in yet
+        } else {
+          // some other error
+        }
       }
     };
-    const {} = useSelector(state=> state.questionReducer)
-    const loginUser = async () =>{
-      setOtp(true);
-      let user_details = JSON.stringify({'user_id':'1234'})
-      await AsyncStorage.setItem('user_details',user_details)
-    }
     signIn = async () => {
       try {
         await GoogleSignin.hasPlayServices();
         const userInfo = await GoogleSignin.signIn();
+        const user_details = {
+          user_name: userInfo.user.name,
+          user_id: userInfo.user.id,
+          email: userInfo.user.email,
+          profile_pic: userInfo.user.photo,
+        }
+        // dispatch({type:USER_DETAILS_SUCCESS,payload:user_details})
+        dispatch(setUserDetails(user_details));
+        await AsyncStorage.setItem('isLoggedIn','true');
+        await AsyncStorage.setItem('user_details',JSON.stringify(user_details));
         console.log(userInfo)
-        this.setState({ userInfo });
       } catch (error) {
         if (error.code === statusCodes.SIGN_IN_CANCELLED) {
           console.log("Error>>",error.code)
-          // user cancelled the login flow
+          setSnack(true)
+          setSnackMsg("Sign in Cancelled")
         } else if (error.code === statusCodes.IN_PROGRESS) {
           console.log("In progress")
           // operation (e.g. sign in) is in progress already
         } else if (error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
           // play services not available or outdated
+          setSnack(true)
+          setSnackMsg("PLAY STORE NOT AVAILABLE")
         } else {
           // some other error happened
         }
+      }finally{
+
       }
     };
+
+    const setUser = async() =>{
+      const user_details = {
+        user_id: phoneNumber,
+        user_name: "Guest",
+        email: null,
+        profile_pic: null
+      }
+      try{
+        dispatch({type:USER_DETAILS_SUCCESS,payload:user_details})
+        await AsyncStorage.setItem('isLoggedIn','true')
+        await AsyncStorage.setItem('user_details',JSON.stringify(user_details));
+        dispatch(setUserDetails());
+      }catch(e){
+        setSnack(true)
+        setSnackMsg("Some Error occured");
+      }
+      
+    }
+  
+    // Handle login
+    const onAuthStateChanged = (user) => {
+      if (user) {
+          console.log("user loged in",user);
+          setOtpScreen(false)
+          setUser();
+          dispatch(getUserDetails(userInfo.user.id))
+          setLoading(false);
+      }
+    }
+  
+    useEffect(() => {
+      const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
+      return subscriber; // unsubscribe on unmount
+    }, []);
+
+    useEffect(()=>{
+      getCurrentUserInfo();
+    },[])
+  
+    // Handle the button press
+    const signInWithPhoneNumber = async () => {
+      if(!phoneNumberError){
+        try{
+          const phone = '+91'+phoneNumber;
+          const confirmation = await auth().signInWithPhoneNumber(phone);
+          setConfirm(confirmation);
+          setOtpScreen(true);
+        }catch(e){
+          setSnack(true);
+          setSnackMsg("Some error occured");
+        }
+        
+      }else{
+
+      }
+    }
+  
+    const confirmCode = async(code) => {
+      try {
+        if(!otpError) {
+          const resp = await confirm.confirm(otp);
+          console.log(resp)
+          setUser();
+        }
+      } catch (error) {
+        console.log(error)
+        setSnack(true);
+        setSnackMsg("Some error occured");
+      }
+    }
+    if(userDetails.loading) {
+      return (
+            <Container>
+                <View
+                  style={{ flex: 1, alignItems: "center", justifyContent: "center" }}
+                >
+                  <ActivityIndicator size="large" />
+                </View>
+            </Container>
+          )
+    }
     
   return (
     
-    // <Container isScrollable>
-    
-        //  <LoginScreen
-        //     logoImageSource={require("../../../assets/adaptive-icon.png")}
-        //     onLoginPress={() => {navigation.navigate('Home')}}
-        //     onSignupPress={() => {}}
-        //     onEmailChange={(email) => {email = email}}
-        //     onPasswordChange={(password) => {password = password}}
-        //     >
-        //     <SocialButton text="Continue with Google" onPress={() => {}} />
-                
-        // </LoginScreen>
-     
-    // </Container>
     <>
     <Backdrop
       revealed={true}
       backLayer={<View style={{ height: windowHeight/3 }} >
         <View style={{alignItems:'center',justifyContent:'center',flex:1}} >
-          <Text  color='#fff' >LOGIN</Text>
+          <Text  color='#fff' style={{fontSize:30,fontWeight:500}}>LOGIN</Text>
         </View>
       </View>}
     >
     </Backdrop>
     <View style={styles.container}>
-    <View style={{ marginTop: 10 }}>
-                {!sendOtp && <>
-                  <TextInput
-                    mode="outlined"
-                    label="NUMBER"
-                    style={{ marginTop: 10 }}/>
-                   {/* <FirebaseRecaptchaVerifierModal
-                      ref={recaptchaVerifier}
-                      firebaseConfig={firebaseConfig}
-                      // attemptInvisibleVerification
-                    /> */}
-                    </>
-                }
-                {sendOtp && 
-                <TextInput
-                  mode="outlined"
-                  label="OTP"
-                  style={{ marginTop: 10 }}
-                />
-                }
-
-                
+    <View style={{ marginTop: 0 }}>
+      {!otpScreen && <TextInput error={phoneNumberError} onChangeText={text => onPhoneNumberChange(text)} mode="outlined" label="NUMBER" style={{ marginTop: 10 }}/>}
+      {otpScreen && <TextInput error={otpError} onChangeText={text => onOtpChange(text)} mode="outlined" label="OTP" style={{ marginTop: 10 }} />}          
                 
     </View>
-      {sendOtp && <Button variant="text" title="resend" style={{padding:0,justifyContent:'flex-start',width:100,marginLeft:-20}} />}
-      {/* {!sendOtp && <CustomSocialButton name='phone'   title='Login with Phone' onPress = {()=>{setOtp(true);signInWithNum('+917992367559',recaptchaVerifier.current)}} />} */}
-      {!sendOtp && <CustomSocialButton name='phone'   title='Login with Phone' onPress = {()=>{setOtp(true);signIn()}} />}
-      {sendOtp && <CustomSocialButton   title='Verify' onPress = {()=>{loginUser()}} />}
-      {sendOtp && <CustomSocialButton name='phone'   title='change number' onPress = {()=>{setOtp(false)}} />}
-      {/* <CustomSocialButton name='envelope-o'   title='Login with Google' onPress = {()=>{}} />
-      <CustomSocialButton name='facebook'   title='Login with Facebook' onPress = {()=>{signWithEmailPass()}} /> */}
+      {otpScreen && <Button variant="text" title="resend" style={{padding:0,justifyContent:'flex-start',width:100,marginLeft:-20}} />}
+      {!otpScreen && <CustomSocialButton name='phone'   title='Login with Phone' onPress = {()=>{signInWithPhoneNumber()}} />}
+      {otpScreen && <CustomSocialButton   title='Verify' onPress = {()=>{confirmCode()}} />}
+      {otpScreen && <CustomSocialButton name='pencil-square-o'   title='change number' onPress = {()=>{setOtpScreen(false)}} />}
+      <CustomSocialButton name='google'   title='Login with Google' onPress = {()=>{signIn()}} />
+      <SnackbarMsg show={showSanck} msg={snackMsg}/>
     </View>
     </>
   );

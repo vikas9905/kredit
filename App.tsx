@@ -26,6 +26,7 @@ import {store} from './app/store/store';
 import {theme} from './app/theme.js';
 import Login from './app/screens/login/login.js';
 import Home  from './app/screens/home/Home.js';
+import SplashScreen from 'react-native-splash-screen'
 // import { useScreens } from 'react-native-screens';
 // import {enableScreens} from 'react-native-screens'
 // enableScreens(false) 
@@ -76,7 +77,9 @@ export default function App() {
     // if (!loaded) {
     //   return null;
     // }
-  
+    useEffect(()=>{
+      SplashScreen.hide();
+    },[])
     
   return (
     < >

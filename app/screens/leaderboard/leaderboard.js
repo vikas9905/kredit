@@ -1,6 +1,6 @@
 /*eslint-disable*/
 import React,{useState,useEffect,useRef} from 'react'
-import { View, SafeAreaView } from 'react-native'
+import { View, SafeAreaView,FlatList } from 'react-native'
 // import auth from '@react-native-firebase/auth';
 import Header from '../../components/homeComponent';
 import { Icon , Input,Tab,TabView} from '@rneui/themed';
@@ -23,9 +23,22 @@ export default LeaderBoard = ({navigation}) =>{
 
     const {leaderboard} = useSelector(state=>state.userReducer)
 
+    const Item = ({user}) =>{
+      return (
+        <>
+          <View style={{height:100,backgroundColor:'#fff',flexDirection:'row',justifyContent:'space-around',alignItems:'center',padding:5,marginTop:5}}>
+            <Avatar image={{ uri:  user?.item?.profile_pic || 'https://mui.com/static/images/avatar/1.jpg' }} />
+              <Text >{user?.item?.user_name || 'Guest'}</Text>
+              <Text color="green">₹{user?.item?.credit || 0}</Text>
+          </View>
+        {/* <Divider style={{ marginTop: 10, backgroundColor: "#000000" }} /> */}
+        </>
+      )
+    }
+
     useEffect(()=>{
       dispatch(getLeaderboard());
-    })
+    },[])
 
     if(leaderboard.isLoading) {
       return (
@@ -45,11 +58,15 @@ export default LeaderBoard = ({navigation}) =>{
           >
             <Text>Top Earning Users</Text>
             <Divider style={{ marginTop: 10, backgroundColor: "#000000" }} />
-            <View style={{height:100,backgroundColor:'#fff',flexDirection:'row',justifyContent:'space-between',alignItems:'center',padding:5}}>
-                <Avatar image={{ uri: "https://mui.com/static/images/avatar/1.jpg" }} />
-                <Text >Vikash Kumar</Text>
-                <Text color="green">₹1000</Text>
-            </View>
+            
+            <FlatList
+              data={leaderboard.data}
+              renderItem={(item) => <Item user={item} />}
+              keyExtractor={(item) => item.id}
+              showsVerticalScrollIndicator={false}
+              refreshing={leaderboard.loading}
+              onRefresh={() => dispatch(getLeaderboard())}
+            />
           </Flex>
         </Flex>
 

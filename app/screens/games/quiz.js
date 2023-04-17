@@ -23,6 +23,7 @@ export const QuizScreen = ({navigation,route})=>{
     console.log(ques_id)
     const dispatch = useDispatch();
     const {data,userAnswers,isLoading,result} = useSelector(state=> state.questionReducer)
+    const {userDetails} = useSelector(state => state.userReducer)
     // console.log("result_data",result)
     const [visible,setVisible] = useState(result.showModal);
     const [mediaPlayerState,setState] = useState({});
@@ -52,7 +53,7 @@ export const QuizScreen = ({navigation,route})=>{
         if(loaded){
           interstitial.show();
         }
-        dispatch(ValidateAnswers(userAnswers))
+        dispatch(ValidateAnswers(userAnswers,userDetails.user_id,ques_id))
         //showInterstitial();
     }
     useEffect(()=>{

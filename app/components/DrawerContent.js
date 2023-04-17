@@ -1,5 +1,5 @@
 /*eslint-disable*/
-import React from 'react';
+import React,{useState,useEffect} from 'react';
 import { View, StyleSheet, Image } from 'react-native';
 import {
     useTheme,
@@ -20,17 +20,26 @@ import {
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Feather from 'react-native-vector-icons/Feather';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-
-import {AsyncStorage} from 'react-native';
-
+import AuthNavigator from '../routings/AuthNavigator';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import {USER_DETAILS_FAILED} from '../actions/actionTypes';
+import {useDispatch,useSelector} from 'react-redux';
+import {signOut} from '../actions/actions';
 export function DrawerContent({navigation,props}) {
 
     const paperTheme = useTheme();
-
-    const signOut = async () =>{
-        await AsyncStorage.removeItem('user_details');
-        navigation.navigate('Login')
-    }
+    const dispatch = useDispatch();
+    const [isLoggedIn,setLogin] = useState(true)
+    const {userDetails} = useSelector(state=> state.userReducer);
+    
+    // const getAuth = () =>{
+    //     return (<AuthNavigator/>)
+    // }
+    // useEffect(()=>{
+    //     if(!isLoggedIn){
+    //        getAuth();
+    //     }
+    // },[])
 
     return(
         <View style={{flex:1}}>
@@ -39,19 +48,19 @@ export function DrawerContent({navigation,props}) {
                     <View style={styles.userInfoSection}>
                         <View style={{flexDirection:'row',marginTop: 15,}}>
                             <Avatar
-                                image={{ uri: "https://mui.com/static/images/avatar/1.jpg" }}
+                                image={{ uri: userDetails.profile_pic}}
                                 size={50}
                             />
                             <View style={{marginLeft:15, flexDirection:'column'}}>
-                                <Title style={styles.title}>John Doe</Title>
-                                <Caption style={styles.caption}>@j_doe</Caption>
+                                <Title style={styles.title}>{userDetails.user_name}</Title>
+                                {/* <Caption style={styles.caption}>@j_doe</Caption> */}
                             </View>
                         </View>
 
                         <View style={styles.row}>
                             <View style={styles.section}>
                                <Text >Total Earnings:</Text>
-                                <Text style={{marginLeft:15,color:'green'}}>₹100</Text>
+                                <Text style={{marginLeft:15,color:'green'}}>₹{userDetails?.total_coins || 0}</Text>
                             </View>
                             {/* <View style={styles.section}>
                                 <Paragraph style={[styles.paragraph, styles.caption]}>100</Paragraph>
@@ -138,7 +147,7 @@ export function DrawerContent({navigation,props}) {
                 <DrawerItem 
                     icon={({color, size}) => (
                         <Icon 
-                        name="home" 
+                        name="logout" 
                         color={color}
                         size={size}
                         />

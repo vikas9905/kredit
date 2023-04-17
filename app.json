@@ -6,7 +6,7 @@
   },
   "expo": {
       "android": {
-        "googleServicesFile": "./google-services.json"
+        "googleServicesFile": "./google-service.json"
       },
       "ios": {
         "googleServicesFile": "./GoogleService-Info.plist"
