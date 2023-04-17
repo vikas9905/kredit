@@ -79,7 +79,7 @@ export function DrawerContent({navigation,props}) {
                                 />
                             )}
                             label="Home"
-                            onPress={() => {props.navigation.navigate('Home')}}
+                            onPress={() => {navigation.navigate('Home')}}
                         />
                         <DrawerItem 
                             icon={({color, size}) => (
@@ -90,21 +90,21 @@ export function DrawerContent({navigation,props}) {
                                 />
                             )}
                             label="Profile"
-                            onPress={() => {props.navigation.navigate('Profile')}}
+                            onPress={() => {navigation.navigate('Profile')}}
                         />
                         <DrawerItem 
                             icon={({color, size}) => (
                                 <MaterialCommunityIcons name="home" color={color} size={size} />
                             )}
                             label="Earnings"
-                            onPress={() => {props.navigation.navigate('Earn')}}
+                            onPress={() => {navigation.navigate('Earn')}}
                         />
                         <DrawerItem 
                             icon={({color, size}) => (
                                 <Image source={require("../../assets/quiz.png")}   style={{width: 23, height: 23}}/>
                             )}
                             label="Quiz"
-                            onPress={() => {props.navigation.navigate('listQuiz',{quiz_type:'kbc'})}}
+                            onPress={() => {navigation.navigate('listQuiz',{quiz_type:'kbc'})}}
                         />
 {/*                         
                         <DrawerItem 
@@ -127,7 +127,7 @@ export function DrawerContent({navigation,props}) {
                                 />
                             )}
                             label="Settings"
-                            onPress={() => {props.navigation.navigate('Profile')}}
+                            onPress={() => {navigation.navigate('Profile')}}
                         />
                     
                     </Drawer.Section>
