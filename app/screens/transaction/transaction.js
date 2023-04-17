@@ -90,6 +90,11 @@ export default Transaction = ({navigation})=>{
         payment_option: userDetails.user_id
       }
       dispatch(orderRequest(data));
+      if(order.status == 200) {
+        setSnack(true);
+        setSnackMsg("Request submitted successfull");
+        dispatch(getUserCreditDebitHistory(userDetails.user_id))
+      }
     }
     useEffect(()=>{
       dispatch(getUserCreditDebitHistory(userDetails.user_id))
