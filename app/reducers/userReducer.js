@@ -6,7 +6,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const initialState = {
     userDetails: {
-        loading:true,
+        loading:false,
         paymentDetails:{
             loading:false
         }

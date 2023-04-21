@@ -1,8 +1,9 @@
 /*eslint-disable*/
 const _Environments = {
-    production:  {BASE_URL: '', API_KEY: ''},
+    // production:  {BASE_URL: 'https://quizgame-django-zd3x56gwza-uc.a.run.app', API_KEY: ''},
+    production:  {BASE_URL: 'https://truepromise.pythonanywhere.com', API_KEY: ''},
     staging:     {BASE_URL: '', API_KEY: ''},
-    development: {BASE_URL: 'http://192.168.1.6:8000', API_KEY: ''},
+    development: {BASE_URL: 'http://192.168.1.5:8000', API_KEY: ''},
 }
 
 getEnvironment = ()=> {
@@ -13,7 +14,7 @@ getEnvironment = ()=> {
 }
 
 getPlatform = () =>{
-    return 'development';
+    return 'production';
 }
 
 export const Environment = getEnvironment()

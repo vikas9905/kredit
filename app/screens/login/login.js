@@ -114,7 +114,7 @@ export default function Login({navigation}) {
         dispatch(setUserDetails(user_details));
         await AsyncStorage.setItem('isLoggedIn','true');
         await AsyncStorage.setItem('user_details',JSON.stringify(user_details));
-        console.log(userInfo)
+        console.log("userinfo in sign in>>>",userInfo)
       } catch (error) {
         if (error.code === statusCodes.SIGN_IN_CANCELLED) {
           console.log("Error>>",error.code)
@@ -200,7 +200,7 @@ export default function Login({navigation}) {
           setUser();
         }
       } catch (error) {
-        console.log(error)
+        console.log("eeor in sign in otp>>",error)
         setSnack(true);
         setSnackMsg("Some error occured");
       }

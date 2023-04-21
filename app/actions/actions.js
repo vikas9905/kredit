@@ -27,7 +27,7 @@ export const getQuestion = (ques_id) =>{
                 return dispatch({type:FAILED,payload:[]})
             }
         } catch (error) {
-            console.log(error)
+            //console.log(error)
             return dispatch({type:FAILED,payload:[]})
         }
     }
@@ -53,7 +53,7 @@ export const ValidateAnswers = (answers,user_id,quiz_id) =>{
             }
             const resp = await axios.post(base_url+"/result/",payload);
             if(resp.status == 200) {
-                // console.log(resp.data)
+                // //console.log(resp.data)
                 return dispatch({
                     type: RESULT_SUCCESS,
                     payload: resp.data
@@ -118,7 +118,7 @@ export const getUserDetails = (user_id) =>{
         dispatch({type:USER_DETAILS_LOADING});
         try{
             let resp = await axios.get(`${base_url}/user/${user_id}/`);
-            console.log(resp.data)
+            console.log("userDetails in action>>",resp.data)
             if(resp.status == 200) {
                 return dispatch({type:USER_DETAILS_SUCCESS,payload:resp.data});
             }else{
@@ -126,7 +126,8 @@ export const getUserDetails = (user_id) =>{
                 return dispatch({type:USER_DETAILS_FAILED});
             }
         }catch(e) {
-            console.log(e)
+            return dispatch({type:USER_DETAILS_FAILED});
+            console.log("user_details_failed>>",e)
         }finally{
             
         }
@@ -137,13 +138,14 @@ export const getUserCreditDebitHistory = (user_id) =>{
         dispatch({type:USER_HISTORY_LOADING});
         try{
             let resp = await axios.get(`${base_url}/user/${user_id}/history/`);
-            console.log(resp.data)
+            console.log("credit_debit in action>>>",resp.data)
             if(resp.status == 200) {
                 return dispatch({type:USER_HISTORY_SUCCESS,payload:resp.data});
             }else{
                 return dispatch({type:USER_HISTORY_FAILED});
             }
         }catch(e) {
+            return dispatch({type:USER_HISTORY_FAILED});
             console.log(e)
         }finally{
             
@@ -179,7 +181,7 @@ export const orderRequest = (data) =>{
                 return dispatch({type:USER_ORDER_FAILED});
             }
         }catch(e) {
-
+            return dispatch({type:USER_ORDER_FAILED});
         }finally{
             
         }
@@ -211,7 +213,7 @@ export const setUserDetails = (data) =>{
             }
           } catch (error) {
             dispatch({type:USER_DETAILS_FAILED})
-            console.log(error)
+            console.log("error in user set action>>>",error)
           }
     }
 }
