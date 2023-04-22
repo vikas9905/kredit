@@ -24,7 +24,7 @@ import {
   Theme,useTheme
 } from "@react-navigation/native";
 import {theme} from '../../theme';
-import { TextInput } from 'react-native-paper';
+import { TextInput,Snackbar } from 'react-native-paper';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {webCliendId,androidClientId} from '@env';
 import {SnackbarMsg} from '../../components/snackbarMsg';
@@ -114,10 +114,14 @@ export default function Login({navigation}) {
         dispatch(setUserDetails(user_details));
         await AsyncStorage.setItem('isLoggedIn','true');
         await AsyncStorage.setItem('user_details',JSON.stringify(user_details));
+        if(userDetails.data.status != 200) {
+          setSnack(true)
+          setSnackMsg("Sign in Cancelled")
+        }
         console.log("userinfo in sign in>>>",userInfo)
       } catch (error) {
+        console.log("Error>>",error)
         if (error.code === statusCodes.SIGN_IN_CANCELLED) {
-          console.log("Error>>",error.code)
           setSnack(true)
           setSnackMsg("Sign in Cancelled")
         } else if (error.code === statusCodes.IN_PROGRESS) {
@@ -136,18 +140,27 @@ export default function Login({navigation}) {
     };
 
     const setUser = async() =>{
+      if(!phoneNumber.includes('+91')){
+
+      }
       const user_details = {
-        user_id: phoneNumber,
-        user_name: "Guest",
-        email: null,
-        profile_pic: null
+        data:{
+          user:{
+            user_id: phoneNumber,
+            user_name: "Guest",
+            email: null,
+            profile_pic: null
+          },
+          paymentdetails:null
+        }
       }
       try{
-        dispatch({type:USER_DETAILS_SUCCESS,payload:user_details})
+        dispatch(setUserDetails(user_details.data.user));
+        // dispatch({type:USER_DETAILS_SUCCESS,payload:user_details})
         await AsyncStorage.setItem('isLoggedIn','true')
-        await AsyncStorage.setItem('user_details',JSON.stringify(user_details));
-        dispatch(setUserDetails());
+        await AsyncStorage.setItem('user_details',JSON.stringify(user_details.data.user));
       }catch(e){
+        console.log("in login set user>>",e)
         setSnack(true)
         setSnackMsg("Some Error occured");
       }
@@ -158,9 +171,10 @@ export default function Login({navigation}) {
     const onAuthStateChanged = (user) => {
       if (user) {
           console.log("user loged in",user);
+          setPhoneNumber(user.phoneNumber);
           setOtpScreen(false)
           setUser();
-          dispatch(getUserDetails(userInfo.user.id))
+          // dispatch(getUserDetails(userInfo.user.id))
           setLoading(false);
       }
     }
@@ -171,18 +185,26 @@ export default function Login({navigation}) {
     }, []);
 
     useEffect(()=>{
+      setPhoneNumber('')
       getCurrentUserInfo();
     },[])
   
     // Handle the button press
     const signInWithPhoneNumber = async () => {
       if(!phoneNumberError){
+        if(phoneNumber.length < 10){
+          console.log(phoneNumber.length)
+          setSnack(true);
+          setSnackMsg("Not Valid number");
+          return;
+        }
         try{
           const phone = '+91'+phoneNumber;
           const confirmation = await auth().signInWithPhoneNumber(phone);
           setConfirm(confirmation);
           setOtpScreen(true);
         }catch(e){
+          console.log("phone auth err>>",e)
           setSnack(true);
           setSnackMsg("Some error occured");
         }
@@ -196,13 +218,13 @@ export default function Login({navigation}) {
       try {
         if(!otpError) {
           const resp = await confirm.confirm(otp);
-          console.log(resp)
+          console.log("confirm>>",resp)
           setUser();
         }
       } catch (error) {
-        console.log("eeor in sign in otp>>",error)
         setSnack(true);
-        setSnackMsg("Some error occured");
+        setSnackMsg("Wrong Otp Entered");
+        console.log("eeor in sign in otp>>",error)
       }
     }
     if(userDetails.loading) {
@@ -240,8 +262,20 @@ export default function Login({navigation}) {
       {otpScreen && <CustomSocialButton   title='Verify' onPress = {()=>{confirmCode()}} />}
       {otpScreen && <CustomSocialButton name='pencil-square-o'   title='change number' onPress = {()=>{setOtpScreen(false)}} />}
       <CustomSocialButton name='google'   title='Login with Google' onPress = {()=>{signIn()}} />
-      <SnackbarMsg show={showSanck} msg={snackMsg}/>
     </View>
+    <View >
+              <Snackbar
+                visible={showSanck}
+                onDismiss={() => {setSnack(false)}}
+                action={{
+                  label: 'OK',
+                  onPress: () => {
+                    setSnack(false)
+                  },
+                }}>
+                {snackMsg}
+              </Snackbar>
+            </View>
     </>
   );
 }

@@ -14,7 +14,7 @@ export const getQuestion = (ques_id) =>{
     return async (dispatch) =>{
         try {
             dispatch({type:LOADING})
-            // console.log("QUESTION_id",ques_id)
+            console.log("QUESTION_id",ques_id)
             data={
                 secret_key: 'any',
                 user_id: 'kajhs'
@@ -27,7 +27,7 @@ export const getQuestion = (ques_id) =>{
                 return dispatch({type:FAILED,payload:[]})
             }
         } catch (error) {
-            //console.log(error)
+            console.log(error)
             return dispatch({type:FAILED,payload:[]})
         }
     }
@@ -206,8 +206,10 @@ export const getDataFromLocalStorage = (key,actionTypeSuccess,actionTypeFail) =>
 export const setUserDetails = (data) =>{
     return async (dispatch) =>{
         try {
+            console.log(data)
             dispatch({type:USER_DETAILS_LOADING});
             const resp = await axios.post(`${base_url}/user/`,data);
+            console.log("in setUser action>>",resp.data)
             if (resp['status'] == 200) {
               dispatch({type:USER_DETAILS_SUCCESS,payload:resp.data})
             }

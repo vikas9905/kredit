@@ -6,6 +6,7 @@ import {View, Pressable,StatusBar,StyleSheet,TouchableOpacity,Text,Button} from 
 import {useTheme} from '@react-navigation/native';
 import {useSelector} from 'react-redux';
 import Video from 'react-native-video';
+import {ActivityIndicator} from "@react-native-material/core";
 // import { Video, ResizeMode } from 'expo-av';
 export const VideoPlayerComponent = ({name,title,color,backgroundColor,onPress,url,state}) =>{
     // const {theme} = useSelector((state)=> state.themeReducers);
@@ -56,21 +57,38 @@ export const VideoPlayerComponent = ({name,title,color,backgroundColor,onPress,u
     //     /> */}
     //     </>
     // )
+    const[isBuffering,setBuffer] = useState(true);
+    const[isError,setError] = useState(false);
+    const[isLoaded,setLoaded] = useState(false);
+    const checkBuffering = () =>{
+      if(!isLoaded){
+        setBuffer(true);
+      }else{
+        setBuffer(false);
+      }
+    }
+    const onLoadComplete =() =>{
+      setBuffer(false);
+      setLoaded(true);
+      setError(false)
+    }
     return(
       <>
         <Video source={{uri: url}}   // Can be a URL or a local file.
           ref={(ref) => {
-            console.log(ref)
+            //console.log(ref)
           }}                                      // Store reference
-          onBuffer={()=>console.log("Buffering...")}                // Callback when remote video is buffering
-          onError={()=>console.log("error..")}  
-          poster="https://baconmockup.com/300/200/"
-          posterResizeMode="contain"
+          onBuffer={()=> {checkBuffering();console.log("buffering...")}}                // Callback when remote video is buffering
+          onError={()=>{console.log("error..");setError(true)}}  
+          onLoadStart={()=>{console.log("loading started");setError(false);checkBuffering()}}
+          onLoad={()=>{onLoadComplete();console.log("loaded..")}}
           audioOnly={false}
           controls={true}
           paused={true} 
           resizeMode="contain"            // Callback when video cannot be loaded
           style={styles.video} />
+          {isBuffering && <ActivityIndicator color="#fff" size="large" style={styles.videoLoader} />}
+          {isError && <Text style={{color:'red'}}>Some Error Occured</Text>}
       </>
     )
 }
@@ -86,6 +104,13 @@ const styles = StyleSheet.create({
     video:{
         width:'100%',
         height: 250
+    },
+    videoLoader:{
+      position: 'absolute',
+        top: 90,
+        left: 70,
+        right: 70,
+        height: 50,
     }
   })
   

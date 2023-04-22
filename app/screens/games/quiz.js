@@ -17,6 +17,8 @@ import {VideoPlayerComponent} from '../../components/videoPlayer';
 import { AudioPlayer} from "../../components/audioPlayer";
 import { InterstitialAd, AdEventType, TestIds } from 'react-native-google-mobile-ads';
 import {BannerAd} from '../../components/bannerAd';
+import {Environment} from '../../../environment';
+const base_url =Environment.BASE_URL;
 export const QuizScreen = ({navigation,route})=>{
     const {ques_id,quiz_type,duration} = route.params;
     // console.log("quiz_type",quiz_type)
@@ -24,6 +26,7 @@ export const QuizScreen = ({navigation,route})=>{
     const dispatch = useDispatch();
     const {data,userAnswers,isLoading,result} = useSelector(state=> state.questionReducer)
     const {userDetails} = useSelector(state => state.userReducer)
+    console.log("question_data>>>",data)
     // console.log("result_data",result)
     const [visible,setVisible] = useState(result.showModal);
     const [mediaPlayerState,setState] = useState({});
@@ -81,11 +84,11 @@ export const QuizScreen = ({navigation,route})=>{
         <Header name="Quiz" icon="arrow-back" navigation={navigation} />
         <Container>
           { !isReady && <View style={{height:300}}>
-            <VideoPlayerComponent state={setState} url="http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4" />
+            <VideoPlayerComponent state={setState} url={base_url+data[0].ques.url} />
           </View>
           }
           { !isReady && <View style={{height:250}}>
-            <AudioPlayer setState={setState} url="https://www.kozco.com/tech/LRMonoPhase4.mp3" />
+            <AudioPlayer setState={setState} url={base_url+data[0].ques.url} />
           </View>
           }
           {isReady && <FlatList
