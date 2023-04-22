@@ -33,7 +33,7 @@ export const getQuestion = (ques_id) =>{
     }
 }
 
-export const ValidateAnswers = (answers,user_id,quiz_id) =>{
+export const ValidateAnswers = (answers,user_id,quiz_id,quiz_type?) =>{
     return async (dispatch) =>{
         try {
             dispatch({
@@ -51,7 +51,11 @@ export const ValidateAnswers = (answers,user_id,quiz_id) =>{
                 quiz_id: quiz_id,
                 answer: data
             }
-            const resp = await axios.post(base_url+"/result/",payload);
+            let url = base_url+"/result/";
+            if(quiz_type != undefined && quiz_type == 'predict') {
+                url = `${base_url}/predict/`;
+            }
+            const resp = await axios.post(url,payload);
             if(resp.status == 200) {
                 // //console.log(resp.data)
                 return dispatch({
@@ -79,6 +83,33 @@ export const getQuizs = (user_id,quiz_type) => {
         try {
             dispatch({type:QUIZ_LOADING})
             const resp = await axios.post(base_url+'/quiz/',{'user_id':user_id,'quiz_type':quiz_type})
+            console.log(resp)
+            if(resp.status == 200) {
+                return dispatch({
+                    type: QUIZ_SUCCESS,
+                    payload: resp.data
+                })
+            }else {
+                return dispatch({
+                    type: QUIZ_FAILED,
+                    payload: []
+                })
+            }
+        }catch(e) {
+            console.log(e)
+            return dispatch({
+                type: QUIZ_FAILED,
+                payload: []
+            })
+        }
+    }
+}
+
+export const getPredictQuizs = (user_id,quiz_type) => {
+    return async (dispatch) =>{
+        try {
+            dispatch({type:QUIZ_LOADING})
+            const resp = await axios.get(`${base_url}/predict/${user_id}`)
             console.log(resp)
             if(resp.status == 200) {
                 return dispatch({

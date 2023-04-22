@@ -14,7 +14,7 @@ getEnvironment = ()=> {
 }
 
 getPlatform = () =>{
-    return 'production';
+    return 'development';
 }
 
 export const Environment = getEnvironment()

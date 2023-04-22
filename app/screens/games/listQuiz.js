@@ -11,14 +11,16 @@ import {
   Text,
   Stack,
   Button,
-  ActivityIndicator,
+  ActivityIndicator,ListItem
 } from "@react-native-material/core";
 // import WheelOfFortune from 'react-native-wheel-of-fortune'
 import Emoji from "react-native-emoji";
 import Container from '../../container/container';
-import {getQuizs} from '../../actions/actions';
+import {getQuizs,getPredictQuizs} from '../../actions/actions';
+import {BannerAd} from '../../components/bannerAd';
 export const ListQuiz = ({ navigation,route }) => {
   const {quiz_type} = route.params;
+  const[title,setTitle] = useState(quiz_type)
   const dispatch = useDispatch();
   const { quiz } = useSelector((state) => state.quizReducer);
   const {theme,colors} = useSelector(state => state.themeReducers)
@@ -26,7 +28,12 @@ export const ListQuiz = ({ navigation,route }) => {
   // console.log("data>>",quiz.data)
   // console.log("load",quiz.isLoading)
   useEffect(() => {
-    dispatch(getQuizs(userDetails.user_id,quiz_type));
+    if(quiz_type == 'predict'){
+      dispatch(getPredictQuizs(userDetails.user_id,quiz_type));
+    }else{
+      dispatch(getQuizs(userDetails.user_id,quiz_type));
+    }
+    
   }, []);
   const participants = [
     "%10",
@@ -69,7 +76,27 @@ export const ListQuiz = ({ navigation,route }) => {
 
     })
   }
+  const getQuizList = () =>{
+    requestAnimationFrame(() => {
+      if(quiz_type == 'predict'){
+        dispatch(getPredictQuizs(userDetails.user_id,quiz_type));
+      }else{
+        dispatch(getQuizs(userDetails.user_id,quiz_type));
+      }
+    });
+  }
   const CardStyle = ({ quiz }) => {
+    if(quiz_type=='predict' && quiz?.item?.taken ) {
+      return (
+        // <ListItem
+        //     style={{padding:30}}
+        //     leadingMode="avatar"
+        //     leading={ <Text color='green'>₹ {0}</Text>} 
+        //     title="correct %"
+        // />
+        <></>
+      )
+    }
     return (
       <TouchableOpacity  onPress={ () => navigateTo(quiz,{ques_id:quiz.item.id,quiz_type:quiz.item.quiz_type,duration:quiz.item.duration}) }  underlayColor={colors.secondary}>
         <Card
@@ -108,7 +135,7 @@ export const ListQuiz = ({ navigation,route }) => {
             ₹ {quiz.item.total_coins}
           </Text>
           <Text color="white">{quiz.item.users_won} User Won</Text>
-          <Button variant="text" color={theme.text} title="Start" onPress={()=> navigation.navigate('quiz',{ques_id:quiz.item.id,quiz_type:quiz.item.quiz_type,duration:quiz.item.duration})} />
+          <Button variant="text" color={theme.text} title={(quiz_type=='predict' && quiz.item.taken)? 'CHECK RESULT':'START'} onPress={()=> navigation.navigate('quiz',{ques_id:quiz.item.id,quiz_type:quiz.item.quiz_type,duration:quiz.item.duration})} />
         </View>
       </Card>
       </TouchableOpacity>
@@ -117,7 +144,7 @@ export const ListQuiz = ({ navigation,route }) => {
   if (quiz.isLoading) {
     return (
       <>
-        <Header name="Quiz" icon="arrow-back" navigation={navigation} />
+        <Header name={title} icon="arrow-back" navigation={navigation} />
       <Container>
         <View
           style={{ flex: 1, alignItems: "center", justifyContent: "center" }}
@@ -130,7 +157,7 @@ export const ListQuiz = ({ navigation,route }) => {
   }
   return (
     <>
-      <Header name="Quiz" icon="arrow-back" navigation={navigation} />
+      <Header name={title} icon="arrow-back" navigation={navigation} />
       {/* <Container style={{padding:0,paddingHorizontal:0}}> */}
         <FlatList
           data={quiz.data}
@@ -138,8 +165,9 @@ export const ListQuiz = ({ navigation,route }) => {
           keyExtractor={(item) => item.id}
           showsVerticalScrollIndicator={false}
           refreshing={quiz.isLoading}
-          onRefresh={() => dispatch(getQuizs(userDetails.user_id,quiz_type))}
+          onRefresh={() => getQuizList()}
         />
+        <BannerAd/>
       {/* </Container> */}
     </>
   );

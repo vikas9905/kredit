@@ -19,7 +19,8 @@ import {getQuizs} from '../../actions/actions';
 // import { MaterialCommunityIcons,Ionicons } from '@expo/vector-icons';
 // import { useIsReady } from '../../hooks/readyHook';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-
+import {Snackbar} from 'react-native-paper';
+import {RewardAdd} from '../../components/rewardAdd';
 const BusyIndicator = ({navigation}) =>{
   return (
     <>
@@ -38,7 +39,10 @@ const BusyIndicator = ({navigation}) =>{
 export default Home = ({ navigation }) => {
   const dispatch = useDispatch();
   const { quiz } = useSelector((state) => state.quizReducer);
+  const {userDetails} = useSelector((state)=> state.userReducer);
   const { theme,colors } = useSelector((state) => state.themeReducers);
+  const[showSanck,setSnack] = useState(false);
+  const[snackMsg,setSnackMsg] = useState('');
   // const isReady = useIsReady();
   const participants = [
     "%10",
@@ -120,6 +124,11 @@ export default Home = ({ navigation }) => {
     );
   };
   const navigateTo = (screen,quiz_type) =>{
+    if(userDetails.quiz_allowed <=0 ) {
+      setSnack(true);
+      setSnackMsg("All Attempts Used, Increase Your Attempt");
+      return;
+    } 
     requestAnimationFrame(() => {
       navigation.navigate(screen,{quiz_type:quiz_type})
     });
@@ -128,7 +137,7 @@ export default Home = ({ navigation }) => {
   return (
     <>
       <Header name="Home" icon="menu" navigation={navigation} />
-      <Container>
+      <Container isScrollable={true}>
         <View  style={{marginTop:20}}>
           <View style={{flexDirection:'row'}}>
             <TouchableOpacity underlayColor={colors.primaryDark} style={[styles.box,{backgroundColor:colors.primary}]} onPress={()=>navigateTo('listQuiz','kbc')}>
@@ -154,8 +163,32 @@ export default Home = ({ navigation }) => {
               </View>
             </TouchableOpacity>
           </View>
+          <View style={{flexDirection:'row',marginTop:10}}>
+            <TouchableOpacity underlayColor={colors.primaryDark} style={[styles.box,{backgroundColor:colors.primary}]} onPress={()=>navigateTo('listQuiz','predict')}>
+              <View style={{alignItems:'center',justifyContent:'center',flex:1}}>
+                <Image source={require("../../../assets/add.png")}   style={{width: 50, height: 50}} />
+                <Text  color="#fff">Increase Your Attempt</Text>
+              </View>
+            </TouchableOpacity>
+          </View>
+          <View style={{flexDirection:'row',marginTop:10}}>
+            <RewardAdd navigation={navigation} />
+          </View>
           
         </View>
+        <View >
+              <Snackbar
+                visible={showSanck}
+                onDismiss={() => {setSnack(false)}}
+                action={{
+                  label: 'OK',
+                  onPress: () => {
+                    setSnack(false)
+                  },
+                }}>
+                {snackMsg}
+              </Snackbar>
+            </View>
       </Container>
     </>
   );
@@ -163,8 +196,8 @@ export default Home = ({ navigation }) => {
 
 const styles = StyleSheet.create({
   box:{
-    width:150,
-    height: 150,
+    width:120,
+    height: 120,
     flex:1
   }
 })

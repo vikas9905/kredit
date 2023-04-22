@@ -18,6 +18,9 @@ import { AudioPlayer} from "../../components/audioPlayer";
 import { InterstitialAd, AdEventType, TestIds } from 'react-native-google-mobile-ads';
 import {BannerAd} from '../../components/bannerAd';
 import {Environment} from '../../../environment';
+import {Snackbar} from 'react-native-paper';
+import {UPDATE_ATTEMPT,USER_DETAILS_SUCCESS} from '../../actions/actionTypes';
+
 const base_url =Environment.BASE_URL;
 export const QuizScreen = ({navigation,route})=>{
     const {ques_id,quiz_type,duration} = route.params;
@@ -26,12 +29,14 @@ export const QuizScreen = ({navigation,route})=>{
     const dispatch = useDispatch();
     const {data,userAnswers,isLoading,result} = useSelector(state=> state.questionReducer)
     const {userDetails} = useSelector(state => state.userReducer)
-    console.log("question_data>>>",data)
-    // console.log("result_data",result)
+    // console.log("question_data>>>",data)
+    console.log("userDetails",userDetails)
     const [visible,setVisible] = useState(result.showModal);
     const [mediaPlayerState,setState] = useState({});
     const [isReady,setReady] = useState(false);
     const[countDown,setCountDown] = useState(duration);
+    const[showSanck,setSnack] = useState(false);
+    const[snackMsg,setSnackMsg] = useState('');
     const adUnitId = 'ca-app-pub-2979993637425208/4663033032';
 
     const interstitial = InterstitialAd.createForAdRequest(adUnitId, {
@@ -39,7 +44,7 @@ export const QuizScreen = ({navigation,route})=>{
       keywords: ['fashion', 'clothing'],
     });
     const [loaded, setLoaded] = useState(false);
-
+    const[title,setTitle] = useState(quiz_type)
   useEffect(() => {
     const unsubscribe = interstitial.addAdEventListener(AdEventType.LOADED, () => {
       setLoaded(true);
@@ -53,14 +58,34 @@ export const QuizScreen = ({navigation,route})=>{
     return unsubscribe;
   }, []);
     const checkResult = () =>{
-        if(loaded){
-          interstitial.show();
-        }
-        dispatch(ValidateAnswers(userAnswers,userDetails.user_id,ques_id))
+        requestAnimationFrame(() => {
+          
+          if(loaded){
+            //interstitial.show();
+          }
+          dispatch(ValidateAnswers(userAnswers,userDetails.user_id,ques_id,quiz_type))
+          let payload = {
+            data:{
+              user:{
+                ...userDetails,
+                quiz_allowed: userDetails.quiz_allowed - 1
+              },
+              paymentDetails:{
+                ...userDetails.paymentDetails
+              }
+            }
+          }
+          dispatch({type:USER_DETAILS_SUCCESS,payload:payload})
+          if(quiz_type=='predict'){
+            // setSnack(true);
+            // setSnackMsg("Answers Saved, Coins Will be Credited Automatically based on correct prediction")
+          }
+        });
+        
         //showInterstitial();
     }
     useEffect(()=>{
-        if(quiz_type == 'quiz') {
+        if(quiz_type == 'quiz' || quiz_type=='predict') {
           setReady(true);
         }
         dispatch(getQuestion(ques_id))
@@ -69,7 +94,7 @@ export const QuizScreen = ({navigation,route})=>{
     if(isLoading) {
         return (
             <>
-            <Header name="Quiz" icon="arrow-back" navigation={navigation} />
+            <Header name={title} icon="arrow-back" navigation={navigation} />
             <Container>
                 <View style={{flex:1,alignItems:'center',justifyContent:'center'}}>
                     <ActivityIndicator size="large"/>
@@ -81,7 +106,7 @@ export const QuizScreen = ({navigation,route})=>{
     }
     return (
       <>
-        <Header name="Quiz" icon="arrow-back" navigation={navigation} />
+        <Header name={title} icon="arrow-back" navigation={navigation} />
         <Container>
           { !isReady && <View style={{height:300}}>
             <VideoPlayerComponent state={setState} url={base_url+data[0].ques.url} />
@@ -101,7 +126,7 @@ export const QuizScreen = ({navigation,route})=>{
           />}
           {isReady && <Button
             style={{height:40,marginBottom:5}}
-            title="Check Result"
+            title={(quiz_type=='predict')? 'SAVE ANSWER':'CHECK RESULT'}
             loading={result.isLoading}
             loadingIndicatorPosition="overlay"
             onPress = {() => {checkResult();}}
@@ -111,8 +136,7 @@ export const QuizScreen = ({navigation,route})=>{
             title="Next"
             onPress = {() => setReady(true)}
           />}
-          <BannerAd/>
-          <Modal visible={result.showModal} result={result} navigation={navigation} type="congrats"/>
+          <Modal visible={result.showModal} result={result} navigation={navigation} quiz_type={quiz_type} type="congrats"/>
           {/* <AdMobBanner
           style={styles.bottomBanner}
           bannerSize="fullBanner"
@@ -121,7 +145,23 @@ export const QuizScreen = ({navigation,route})=>{
           testDeviceID="ORGMJBEA99K7D6R4"
           didFailToReceiveAdWithError={bannerError()}
         /> */}
+        <View >
+              <Snackbar
+                visible={showSanck}
+                onDismiss={() => {setSnack(false)}}
+                action={{
+                  label: 'OK',
+                  onPress: () => {
+                    setSnack(false);
+                    navigation.navigate('Home')
+                  },
+                }}>
+                {snackMsg}
+              </Snackbar>
+            </View>
+          
         </Container>
+        <BannerAd/>
       </>
     );
 }

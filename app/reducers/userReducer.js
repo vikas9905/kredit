@@ -1,7 +1,7 @@
 /*eslint-disable*/
 import {USER_DETAILS_FAILED,USER_DETAILS_LOADING,USER_DETAILS_SUCCESS,USER_HISTORY_FAILED,USER_HISTORY_LOADING,
 USER_HISTORY_SUCCESS,USER_LEADERBOARD_LOADING,USER_LEADERBOARD_FAILED,USER_LEADERBOARD_SUCCESS,
-USER_ORDER_LOADING,USER_ORDER_SUCCESS,USER_ORDER_FAILED,USER_PAYMENT_FAILED,USER_PAYMENT_LOADING,USER_PAYMENT_SUCCESS} from '../actions/actionTypes';
+USER_ORDER_LOADING,USER_ORDER_SUCCESS,USER_ORDER_FAILED,USER_PAYMENT_FAILED,USER_PAYMENT_LOADING,USER_PAYMENT_SUCCESS,UPDATE_ATTEMPT} from '../actions/actionTypes';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const initialState = {
@@ -54,6 +54,15 @@ export const userReducer = (state=initialState,action) =>{
                 }
             }
             break;
+        // case UPDATE_ATTEMPT:
+        //     return {
+        //         ...action.payload,
+        //         userDetails:{
+        //             ...action.payload.userDetails,
+        //             quiz_allowed: action.payload.userDetails.quiz_allowed - 1
+        //         }
+        //     }
+        //     break;
         case USER_HISTORY_LOADING:
             return {
                 ...state,

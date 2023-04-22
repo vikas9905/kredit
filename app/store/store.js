@@ -8,7 +8,8 @@ const reducer = combineReducers({
     questionReducer,
     quizReducer,
     themeReducers,
-    userReducer
+    userReducer,
+    addReducer
 })
 
 export const store = createStore(reducer, applyMiddleware(thunk))
