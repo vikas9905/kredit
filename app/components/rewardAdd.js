@@ -60,6 +60,8 @@ export const RewardAdd = ({navigation,onPress}) => {
     if(!rewardAdd.loaded) {
         dispatch({type:REWARD_ADD_LOADING})
         loadAdd()
+    }else{
+        rewarded.show();
     }
   }
 

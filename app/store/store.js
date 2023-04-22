@@ -4,6 +4,7 @@ import thunk from 'redux-thunk';
 import {questionReducer,quizReducer} from '../reducers/quizReducer';
 import {themeReducers} from '../reducers/themeReducers';
 import {userReducer} from '../reducers/userReducer';
+import {addReducer} from '../reducers/addReducer';
 const reducer = combineReducers({
     questionReducer,
     quizReducer,
