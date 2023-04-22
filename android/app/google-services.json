@@ -9,7 +9,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:666405881801:android:3401222239c055b99e8a18",
         "android_client_info": {
-          "package_name": "com.kredit"
+          "package_name": "com.truepromise.kredit"
         }
       },
       "oauth_client": [
@@ -17,7 +17,7 @@
           "client_id": "666405881801-q1n3fvka524e34pbj9hk4k1l2k7mdpi0.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.kredit",
+            "package_name": "com.truepromise.kredit",
             "certificate_hash": "5e8f16062ea3cd2c4a0d547876baa6f38cabf625"
           }
         }
