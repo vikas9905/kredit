@@ -36,13 +36,18 @@ const BusyIndicator = ({navigation}) =>{
   )
 }
 
-export default Home = ({ navigation }) => {
+export default Home = ({ navigation,route }) => {
   const dispatch = useDispatch();
+  // if(route?.params?.showAdd != undefined) {
+  //   setAdd(routes.params.showAdd)
+  // }
   const { quiz } = useSelector((state) => state.quizReducer);
   const {userDetails} = useSelector((state)=> state.userReducer);
   const { theme,colors } = useSelector((state) => state.themeReducers);
   const[showSanck,setSnack] = useState(false);
   const[snackMsg,setSnackMsg] = useState('');
+  const[add,setAdd] = useState(false);
+  const{showAdd} = useSelector(state=>state.addReducer)
   // const isReady = useIsReady();
   const participants = [
     "%10",
@@ -133,6 +138,11 @@ export default Home = ({ navigation }) => {
       navigation.navigate(screen,{quiz_type:quiz_type})
     });
   }
+  useEffect(()=>{
+    // if(showAdd) {
+    //   setState(true)
+    // } 
+  },[])
 
   return (
     <>
@@ -163,16 +173,16 @@ export default Home = ({ navigation }) => {
               </View>
             </TouchableOpacity>
           </View>
-          <View style={{flexDirection:'row',marginTop:10}}>
+          {/* <View style={{flexDirection:'row',marginTop:10}}>
             <TouchableOpacity underlayColor={colors.primaryDark} style={[styles.box,{backgroundColor:colors.primary}]} onPress={()=>navigateTo('listQuiz','predict')}>
               <View style={{alignItems:'center',justifyContent:'center',flex:1}}>
                 <Image source={require("../../../assets/add.png")}   style={{width: 50, height: 50}} />
                 <Text  color="#fff">Increase Your Attempt</Text>
               </View>
             </TouchableOpacity>
-          </View>
+          </View> */}
           <View style={{flexDirection:'row',marginTop:10}}>
-            <RewardAdd navigation={navigation} />
+            <RewardAdd navigation={navigation} showAdd={showAdd}/>
           </View>
           
         </View>

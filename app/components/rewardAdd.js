@@ -7,29 +7,37 @@ import {BusyIndicator} from '../components/busyIndicator';
 import {ActivityIndicator,Text} from '@react-native-material/core';
 import {useSelector,useDispatch} from 'react-redux';
 import {REWARD_ADD_LOADED,REWARD_ADD_LOADING,REWARD_ADD_SHOW} from '../actions/actionTypes';
+import {updateUserDetails} from '../actions/actions';
 const adUnitId = rewardUnitId;
 
 const rewarded = RewardedAd.createForAdRequest(adUnitId, {
-  requestNonPersonalizedAdsOnly: true,
-  keywords: ['fashion', 'clothing'],
+  requestNonPersonalizedAdsOnly: false,
+//   keywords: ['fashion', 'clothing'],
 });
 
-export const RewardAdd = ({navigation,onPress}) => {
+export const RewardAdd = ({navigation,onPress,showAdd}) => {
   const [loaded, setLoaded] = useState(false);
   const [indicatorLoading,setLoading] = useState(false);
   const { theme,colors } = useSelector((state) => state.themeReducers);
   const {rewardAdd} = useSelector(state=> state.addReducer);
+  const {userDetails} = useSelector(state=> state.userReducer)
   const dispatch = useDispatch();
 
   const loadAdd = () =>{
     const unsubscribeLoaded = rewarded.addAdEventListener(RewardedAdEventType.LOADED, () => {
         setLoaded(true);
-        dispatch({type:REWARD_ADD_LOADED})
+        rewarded.show();
+        // dispatch({type:REWARD_ADD_LOADED})
       });
     const unsubscribeEarned = rewarded.addAdEventListener(
         RewardedAdEventType.EARNED_REWARD,
         reward => {
-          console.log('User earned reward of ', reward);
+          console.log('User earned reward of ', reward, showAdd);
+          setLoaded(false)
+          console.log("Show Add ",showAdd)
+          if(!showAdd) {
+            dispatch(updateUserDetails({"user_id":userDetails.user_id,"quiz_allowed":3}))
+          }
         },
       );
       rewarded.load();
@@ -38,11 +46,17 @@ export const RewardAdd = ({navigation,onPress}) => {
   useEffect(() => {
     const unsubscribeLoaded = rewarded.addAdEventListener(RewardedAdEventType.LOADED, () => {
       setLoaded(true);
+    //   rewarded.show()
     });
     const unsubscribeEarned = rewarded.addAdEventListener(
       RewardedAdEventType.EARNED_REWARD,
       reward => {
-        console.log('User earned reward of ', reward);
+        console.log('User earned reward of ', reward, showAdd);
+        console.log("Show Add ",showAdd)
+        setLoaded(false)
+        if(!showAdd) {
+            dispatch(updateUserDetails({"user_id":userDetails.user_id,"quiz_allowed":3}))
+        }
       },
     );
 
@@ -57,25 +71,42 @@ export const RewardAdd = ({navigation,onPress}) => {
   }, []);
 
   const checkAddLoaded = () =>{
-    if(!rewardAdd.loaded) {
-        dispatch({type:REWARD_ADD_LOADING})
+    if(!loaded) {
+        //dispatch({type:REWARD_ADD_LOADING})
         loadAdd()
+        setLoading(true);
     }else{
         rewarded.show();
+        setLoaded(false)
+        setLoading(false);
     }
   }
 
+//   if(showAdd != undefined && showAdd){
+//     checkAddLoaded();
+//   }
+
   useEffect(()=>{
-    console.log("RwardAdd",rewardAdd);
-  },[rewardAdd])
+    if(loaded){
+        //rewarded.show();
+        setLoading(false)
+    }else{
+        // setLoading(true)
+    }
+  },[loaded])
 
   // No advert ready to show yet
   if (loaded) {
     // rewarded.show();
   }
+  if(showAdd) {
+    checkAddLoaded();
+    dispatch({type:REWARD_ADD_LOADING})
+    return null;
+  }
 
   return (
-    <TouchableOpacity underlayColor={colors.primaryDark} style={[styles.box,{backgroundColor:colors.primary}]} onPress={()=>checkAddLoaded()}>
+     <TouchableOpacity underlayColor={colors.primaryDark} style={[styles.box,{backgroundColor:colors.primary}]} onPress={()=>checkAddLoaded()}>
         <View style={{alignItems:'center',justifyContent:'center',flex:1}}>
             {!indicatorLoading && <Image source={require("../../assets/add.png")}   style={{width: 50, height: 50}} />}
             {indicatorLoading && <ActivityIndicator size="large" />}

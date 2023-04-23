@@ -102,13 +102,13 @@ export default function Login({navigation}) {
     };
     signIn = async () => {
       try {
-        // await GoogleSignin.hasPlayServices();
-        // const userInfo = await GoogleSignin.signIn();
+        await GoogleSignin.hasPlayServices();
+        const userInfo = await GoogleSignin.signIn();
         const user_details = {
-          // user_name: '',//userInfo.user.name,
-          user_id: "115435405647413548912",// userInfo.user.id,
-          // email: userInfo.user.email,
-          // profile_pic: userInfo.user.photo,
+          user_name: userInfo.user.name,
+          user_id: userInfo.user.id,
+          email: userInfo.user.email,
+          profile_pic: userInfo.user.photo,
         }
         // dispatch({type:USER_DETAILS_SUCCESS,payload:user_details})
         dispatch(setUserDetails(user_details));

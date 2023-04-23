@@ -1,7 +1,7 @@
 /*eslint-disable*/
 
 import React,{useState,useEffect,useRef} from 'react'
-import { View, SafeAreaView,FlatList } from 'react-native'
+import { View, SafeAreaView,FlatList,Image } from 'react-native'
 // import auth from '@react-native-firebase/auth';
 import Header from '../../components/homeComponent';
 import { Icon , Input,Tab,TabView} from '@rneui/themed';
@@ -38,18 +38,27 @@ export default Transaction = ({navigation})=>{
     const [showSanck,setSnack] = useState(false)
     const [snackMsg,setSnackMsg] = useState('')
     const dispatch = useDispatch()
+    const [realMony,setRealMoney] = useState(0)
     const ListDebitCredit = ({transaction}) =>{
-      console.log(transaction)
+      // console.log(transaction)
       return (
         <View style={{marginTop:5}}>
           {transaction.item?.credit != 0 && <ListItem
             leadingMode="avatar"
-            leading={ <Text color='green'>₹ {transaction?.item?.credit || 0}</Text>} 
-            title="Coins Credited"
+            leading={ <View style={{flexDirection:'row',alignItems:'center'}}>
+              <Text color='green'>{transaction?.item?.credit || 0}</Text>
+              <Image source={require("../../../assets/coins_.png")}   style={{width: 50, height: 50}}/>
+            </View>} 
+            title={' Coins Credited'}
+            titleColor='green'
           />}
           {transaction.item?.debit != 0 && <ListItem
             leadingMode="avatar"
-            leading={ <Text color='red'>₹ {transaction?.item?.debit || 0}</Text>} 
+            leading={ <View style={{flexDirection:'row',alignItems:'center'}}>
+                    <Text color='red'>{transaction?.item?.debit || 0}</Text>
+                    <Image source={require("../../../assets/coins_.png")}   style={{width: 50, height: 50}}/>
+                    </View>
+            } 
             title= {transaction.item?.status}
           />}
         </View>
@@ -60,26 +69,37 @@ export default Transaction = ({navigation})=>{
         setAmountError(true);
       }else{
         setAmountError(false);
+        setRealMoney(text*0.01)
       }
       setAmmount(text)
     }
     const placeOrder = () =>{
+      console.log("History>>",ammount)
       if(amountError) {
         refRBSheet.current.close();
         setSnack(true);
         setSnackMsg("Only numbers allowed")
+        setRealMoney(0)
         return;
       }
-      if(history?.data?.available_coin < ammount && ammount > 0) {
+      if(history?.data?.available_coin < ammount || ammount <= 0) {
         refRBSheet.current.close();
         setSnack(true);
         setSnackMsg("Can not withdraw given ammount");
+        setRealMoney(0)
+        return;
+      }
+      if(realMony>=10){
+        setSnack(true);
+        setSnackMsg("Minimum Withdrawable ammount is: ₹ 10");
+        setRealMoney(0)
         return;
       }
       if(userDetails.paymentDetails?.payment_num == undefined) {
         refRBSheet.current.close();
         setSnack(true);
-        setSnackMsg("PleaseSave paymentDetails in setting");
+        setSnackMsg("Please Save paymentDetails in setting");
+        setRealMoney(0)
         return;
       }
       const data ={
@@ -127,13 +147,13 @@ export default Transaction = ({navigation})=>{
                 Available Balance
               </Text>
               <Text  color={theme.text}>
-                ₹ {history?.data?.available_coin || 0}
+                 {history?.data?.available_coin || 0} <Image source={require("../../../assets/coins_.png")}   style={{width: 30, height: 30}}/>
               </Text>
             </View>
             <View style={{ marginTop: 10 }}>
               <Button
                 variant="text"
-                title="Withdraw"
+                title="Withdraw Coins In real money"
                 onPress={() => refRBSheet.current.open()}
                 color={theme.text}
               />
@@ -201,6 +221,7 @@ export default Transaction = ({navigation})=>{
                 onAmmountTextChange(text)
               }}
             />
+            <Text>Real Money ₹ {realMony}</Text>
             <Button
               variant="contained"
               title="SUBMIT"

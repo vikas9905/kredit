@@ -32,7 +32,7 @@ GoogleSignin.configure({
 });
 const AuthNavigator = ({login}) => {
   const {isLoggedIn,userDetails} = useSelector(state=>state.userReducer)
-  console.log("in auth navigator",userDetails)
+  // console.log("in auth navigator",userDetails)
   dispatch = useDispatch();
   getCurrentUserInfo = async () => {
     try {
@@ -58,7 +58,7 @@ const AuthNavigator = ({login}) => {
     if(!isLoggedIn) {
       let res = false;
       const resp = async () =>  { let res = await AsyncStorage.getItem('isLoggedIn')};
-      console.log(res)
+      // console.log(res)
       if(res == 'true'){
         dispatch({type:USER_DETAILS_SUCCESS})
       }

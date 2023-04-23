@@ -14,6 +14,7 @@ import {
 import { View, SafeAreaView, StyleSheet, FlatList } from 'react-native';
 import { useSelector, useDispatch , useStore} from "react-redux";
 import Emoji from 'react-native-emoji';
+import {REWARD_ADD_SHOW} from '../actions/actionTypes';
 
 export const Modal = (props) => {
   let explosion;
@@ -25,6 +26,7 @@ export const Modal = (props) => {
   const closeModal = () =>{
     // requestAnimationFrame(() => {
       dispatch({type:'MODAL_CLOSE'})
+      //dispatch({type:REWARD_ADD_SHOW})
       props.navigation.navigate('Home');
     // });
     

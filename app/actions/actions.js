@@ -250,6 +250,22 @@ export const setUserDetails = (data) =>{
           }
     }
 }
+export const updateUserDetails = (data) =>{
+    return async (dispatch) =>{
+        try {
+            console.log(data)
+            dispatch({type:USER_DETAILS_LOADING});
+            const resp = await axios.put(`${base_url}/user/`,data);
+            console.log("in setUser action>>",resp.data)
+            if (resp['status'] == 200) {
+              dispatch({type:USER_DETAILS_SUCCESS,payload:resp.data})
+            }
+          } catch (error) {
+            dispatch({type:USER_DETAILS_FAILED})
+            console.log("error in user set action>>>",error)
+          }
+    }
+}
 export const signOut = async () =>{
     try{
         const res = await auth().signOut();
